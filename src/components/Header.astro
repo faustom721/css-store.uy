@@ -45,9 +45,9 @@ import { SITE_TITLE } from '../consts';
 	header {
 		margin: 0;
 		padding: 0 1em;
-		background: rgba(26, 71, 42, 0.3);
+		background: rgba(var(--primary-dark-rgb), 0.3);
 		backdrop-filter: blur(10px);
-		border-bottom: 1px solid rgba(151, 206, 76, 0.1);
+		border-bottom: 1px solid rgba(var(--secondary-rgb), 0.1);
 		position: sticky;
 		top: 0;
 		z-index: 1000;
@@ -112,7 +112,7 @@ import { SITE_TITLE } from '../consts';
 	}
 
 	.social-links a:hover {
-		background: rgba(151, 206, 76, 0.1);
+		background: rgba(var(--secondary-rgb), 0.1);
 		transform: translateY(-2px);
 	}
 

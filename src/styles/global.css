@@ -5,7 +5,21 @@
  */
 
 :root {
-	--accent: #2337ff;
+	/* Orange Theme Colors */
+	--primary: #8b3a20;
+	--primary-dark: #5c2512;
+	--secondary: #ff3700;
+	--text: #e0e0e0;
+	--background: #1a0d08;
+	--accent: #44281d;
+	--glow: rgba(255, 55, 0, 0.3);
+	
+	/* RGB values for rgba() usage */
+	--primary-rgb: 139, 58, 32;
+	--primary-dark-rgb: 92, 37, 18;
+	--secondary-rgb: 255, 55, 0;
+	
+	/* Legacy variables */
 	--accent-dark: #000d8a;
 	--black: 15, 18, 25;
 	--gray: 96, 115, 159;

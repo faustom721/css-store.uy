@@ -30,16 +30,6 @@ const hdImages = {
 			portalBg2: `url(${hdImages.portal2})`,
 			textureBg: `url(${hdImages.texture})`
 		}}>
-			:root {
-				--primary: #2a623d;
-				--primary-dark: #1a472a;
-				--secondary: #97ce4c;
-				--text: #e0e0e0;
-				--background: #0d1f13;
-				--accent: #44281d;
-				--glow: rgba(151, 206, 76, 0.3);
-			}
-
 			body {
 				margin: 0;
 				font-family: 'Atkinson', sans-serif;
@@ -69,8 +59,8 @@ const hdImages = {
 				width: 100%;
 				height: 100%;
 				background: 
-					radial-gradient(circle at 10% 20%, rgba(42, 98, 61, 0.4) 0%, transparent 50%),
-					radial-gradient(circle at 90% 80%, rgba(151, 206, 76, 0.2) 0%, transparent 50%),
+					radial-gradient(circle at 10% 20%, rgba(var(--primary-rgb), 0.4) 0%, transparent 50%),
+					radial-gradient(circle at 90% 80%, rgba(var(--secondary-rgb), 0.2) 0%, transparent 50%),
 					var(--background);
 				z-index: -1;
 				&::before {
@@ -139,9 +129,9 @@ const hdImages = {
 				position: relative;
 				z-index: 2;
 				backdrop-filter: blur(10px);
-				background: rgba(13, 31, 19, 0.3);
-				border-top: 1px solid rgba(151, 206, 76, 0.1);
-				border-bottom: 1px solid rgba(151, 206, 76, 0.1);
+				background: rgba(var(--primary-dark-rgb), 0.3);
+				border-top: 1px solid rgba(var(--secondary-rgb), 0.1);
+				border-bottom: 1px solid rgba(var(--secondary-rgb), 0.1);
 			}
 
 			.hero-text {
@@ -294,12 +284,12 @@ const hdImages = {
 			}
 
 			.feature-card {
-				background: rgba(26, 71, 42, 0.8);
+				background: rgba(var(--primary-dark-rgb), 0.8);
 				padding: 2rem;
 				border-radius: 20px;
 				transition: all 0.3s ease;
 				backdrop-filter: blur(10px);
-				border: 1px solid rgba(151, 206, 76, 0.2);
+				border: 1px solid rgba(var(--secondary-rgb), 0.2);
 				position: relative;
 				overflow: hidden;
 				min-height: 250px;
@@ -316,7 +306,7 @@ const hdImages = {
 				left: 0;
 				width: 100%;
 				height: 100%;
-				background: linear-gradient(45deg, transparent, rgba(151, 206, 76, 0.1), transparent);
+				background: linear-gradient(45deg, transparent, rgba(var(--secondary-rgb), 0.1), transparent);
 				transform: translateX(-100%);
 				transition: 0.5s;
 			}
@@ -355,8 +345,8 @@ const hdImages = {
 					width: 100%;
 					height: 100%;
 					background: 
-						radial-gradient(circle at 20% 30%, rgba(151, 206, 76, 0.1) 0%, transparent 70%),
-						radial-gradient(circle at 80% 70%, rgba(42, 98, 61, 0.1) 0%, transparent 70%);
+						radial-gradient(circle at 20% 30%, rgba(var(--secondary-rgb), 0.1) 0%, transparent 70%),
+						radial-gradient(circle at 80% 70%, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
 				}
 			}
 
@@ -370,11 +360,11 @@ const hdImages = {
 			}
 
 			.testimonial-card {
-				background: rgba(42, 98, 61, 0.3);
+				background: rgba(var(--primary-rgb), 0.3);
 				padding: 2rem;
 				border-radius: 20px;
 				backdrop-filter: blur(10px);
-				border: 1px solid rgba(151, 206, 76, 0.1);
+				border: 1px solid rgba(var(--secondary-rgb), 0.1);
 				font-style: italic;
 				position: relative;
 				overflow: hidden;
@@ -398,7 +388,7 @@ const hdImages = {
 				bottom: -20px;
 				right: 20px;
 				font-size: 8rem;
-				color: rgba(151, 206, 76, 0.1);
+				color: rgba(var(--secondary-rgb), 0.1);
 				font-family: serif;
 				pointer-events: none;
 			}
@@ -418,7 +408,7 @@ const hdImages = {
 				font-size: 1.2rem;
 				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 				padding-top: 1rem;
-				border-top: 1px solid rgba(151, 206, 76, 0.1);
+				border-top: 1px solid rgba(var(--secondary-rgb), 0.1);
 			}
 
 			.specs {
@@ -441,10 +431,10 @@ const hdImages = {
 			.spec-item {
 				text-align: center;
 				padding: 2rem;
-				background: rgba(26, 71, 42, 0.5);
+				background: rgba(var(--primary-dark-rgb), 0.5);
 				border-radius: 15px;
 				backdrop-filter: blur(5px);
-				border: 1px solid rgba(151, 206, 76, 0.1);
+				border: 1px solid rgba(var(--secondary-rgb), 0.1);
 				transition: transform 0.3s ease;
 				height: 100%;
 				display: flex;
@@ -482,8 +472,8 @@ const hdImages = {
 					width: 100%;
 					height: 100%;
 					background: 
-						radial-gradient(circle at 20% 30%, rgba(151, 206, 76, 0.1) 0%, transparent 70%),
-						radial-gradient(circle at 80% 70%, rgba(42, 98, 61, 0.1) 0%, transparent 70%);
+						radial-gradient(circle at 20% 30%, rgba(var(--secondary-rgb), 0.1) 0%, transparent 70%),
+						radial-gradient(circle at 80% 70%, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
 				}
 			}
 
@@ -497,11 +487,11 @@ const hdImages = {
 			}
 
 			.blog-card {
-				background: rgba(26, 71, 42, 0.3);
+				background: rgba(var(--primary-dark-rgb), 0.3);
 				border-radius: 20px;
 				overflow: hidden;
 				backdrop-filter: blur(10px);
-				border: 1px solid rgba(151, 206, 76, 0.1);
+				border: 1px solid rgba(var(--secondary-rgb), 0.1);
 				transition: all 0.3s ease;
 				height: 100%;
 				display: flex;
@@ -511,7 +501,7 @@ const hdImages = {
 			.blog-card:hover {
 				transform: translateY(-10px);
 				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-				border-color: rgba(151, 206, 76, 0.3);
+				border-color: rgba(var(--secondary-rgb), 0.3);
 			}
 
 			.blog-image {
@@ -574,13 +564,13 @@ const hdImages = {
 				font-size: 1.2rem;
 				transition: all 0.3s ease;
 				padding: 0.5rem 1rem;
-				border: 1px solid rgba(151, 206, 76, 0.3);
+				border: 1px solid rgba(var(--secondary-rgb), 0.3);
 				border-radius: 5px;
 				backdrop-filter: blur(5px);
 			}
 
 			.social-links a:hover {
-				background: rgba(151, 206, 76, 0.1);
+				background: rgba(var(--secondary-rgb), 0.1);
 				transform: translateY(-3px);
 			}
 
@@ -591,7 +581,7 @@ const hdImages = {
 				opacity: 0.8;
 				line-height: 1.6;
 				padding: 2rem;
-				background: rgba(26, 71, 42, 0.3);
+				background: rgba(var(--primary-dark-rgb), 0.3);
 				border-radius: 10px;
 				backdrop-filter: blur(5px);
 			}

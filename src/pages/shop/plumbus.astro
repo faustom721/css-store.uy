@@ -14,16 +14,6 @@ const { product } = productData;
 			description="Purchase your very own Plumbus - Galactic Federation ID required"
 		/>
 		<style>
-			:root {
-				--primary: #2a623d;
-				--primary-dark: #1a472a;
-				--secondary: #97ce4c;
-				--text: #e0e0e0;
-				--background: #0d1f13;
-				--accent: #44281d;
-				--glow: rgba(151, 206, 76, 0.3);
-			}
-
 			body {
 				margin: 0;
 				font-family: 'Atkinson', sans-serif;
@@ -41,10 +31,10 @@ const { product } = productData;
 				margin: 0 auto;
 				padding: 2rem;
 				text-align: center;
-				background: rgba(26, 71, 42, 0.3);
+				background: rgba(var(--primary-dark-rgb), 0.3);
 				border-radius: 20px;
 				backdrop-filter: blur(10px);
-				border: 1px solid rgba(151, 206, 76, 0.2);
+				border: 1px solid rgba(var(--secondary-rgb), 0.2);
 				box-shadow: 
 					0 0 20px var(--glow),
 					0 0 40px var(--glow);
@@ -73,7 +63,7 @@ const { product } = productData;
 				line-height: 1.6;
 				margin-bottom: 2rem;
 				padding: 1rem;
-				background: rgba(151, 206, 76, 0.1);
+				background: rgba(var(--secondary-rgb), 0.1);
 				border-radius: 10px;
 			}
 
@@ -98,7 +88,7 @@ const { product } = productData;
 
 			.back-link:hover {
 				transform: translateY(-3px);
-				box-shadow: 0 5px 15px rgba(151, 206, 76, 0.3);
+				box-shadow: 0 5px 15px rgba(var(--secondary-rgb), 0.3);
 			}
 
 			@media (max-width: 768px) {
