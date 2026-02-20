@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import { SITE_TITLE } from '../consts';
 import productData from '../content/data/main.json';
+import GoogleAnalytics from './GoogleAnalytics.astro';
+import AnalyticsEvents from './AnalyticsEvents.astro';
 
 interface Props {
 	title: string;
@@ -14,6 +16,9 @@ const { seo } = productData;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = '/blog-placeholder-1.jpg', keywords = seo.keywords } = Astro.props;
 ---
+
+<!-- Google Analytics -->
+<GoogleAnalytics />
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
@@ -68,3 +73,6 @@ const { title, description, image = '/blog-placeholder-1.jpg', keywords = seo.ke
 
 <!-- Structured Data -->
 <script type="application/ld+json" set:html={JSON.stringify(seo.structuredData)} />
+
+<!-- GA4 Event Tracking -->
+<AnalyticsEvents />

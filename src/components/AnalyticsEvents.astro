@@ -1,0 +1,105 @@
+<!-- GA4 Event Tracking -->
+<script is:inline>
+document.addEventListener('DOMContentLoaded', function() {
+  function trackEvent(eventName, params) {
+    if (typeof gtag === 'function') {
+      gtag('event', eventName, params);
+    }
+  }
+
+  // CTA button clicks
+  document.querySelectorAll('.cta-button').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      trackEvent('cta_click', {
+        event_category: 'engagement',
+        event_label: btn.textContent.trim(),
+        link_url: btn.href
+      });
+    });
+  });
+
+  // Social links in footer
+  document.querySelectorAll('.social-links a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      var url = link.href || '';
+      var platform = 'unknown';
+      if (url.includes('instagram')) platform = 'instagram';
+      else if (url.includes('twitter') || url.includes('x.com')) platform = 'twitter';
+      else if (url.includes('github')) platform = 'github';
+      else if (url.includes('mastodon')) platform = 'mastodon';
+
+      trackEvent('social_click', {
+        event_category: 'social',
+        event_label: platform,
+        link_url: url
+      });
+    });
+  });
+
+  // Instagram follow button
+  document.querySelectorAll('.instagram-follow-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      trackEvent('instagram_follow_click', {
+        event_category: 'social',
+        event_label: 'instagram_follow',
+        link_url: btn.href
+      });
+    });
+  });
+
+  // Email / mailto links
+  document.querySelectorAll('a[href^="mailto:"]').forEach(function(link) {
+    link.addEventListener('click', function() {
+      trackEvent('contact_email', {
+        event_category: 'contact',
+        event_label: link.href.replace('mailto:', '')
+      });
+    });
+  });
+
+  // Blog post clicks
+  document.querySelectorAll('.blog-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      var title = card.querySelector('.blog-title');
+      trackEvent('blog_post_click', {
+        event_category: 'content',
+        event_label: title ? title.textContent.trim() : 'unknown',
+        link_url: card.href
+      });
+    });
+  });
+
+  // Navigation link clicks
+  document.querySelectorAll('.internal-links a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      trackEvent('navigation_click', {
+        event_category: 'navigation',
+        event_label: link.textContent.trim(),
+        link_url: link.href
+      });
+    });
+  });
+
+  // Section scroll visibility tracking
+  var trackedSections = new Set();
+  var sections = document.querySelectorAll('section');
+  if (sections.length && 'IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.className.split(' ')[0] || entry.target.id || 'unnamed';
+          if (!trackedSections.has(id)) {
+            trackedSections.add(id);
+            trackEvent('section_view', {
+              event_category: 'scroll',
+              event_label: id
+            });
+          }
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(function(section) { observer.observe(section); });
+  }
+});
+</script>
