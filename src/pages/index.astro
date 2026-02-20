@@ -5,7 +5,6 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import productData from '../content/data/main.json';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
-import logoMain from '../assets/images/brand/logo.png';
 import logoFooter from '../assets/images/brand/logo-footer.png';
 
 const { product, seo } = productData;
@@ -85,205 +84,121 @@ const hdImages = {
 				}
 			}
 
-			.hero {
-				min-height: 100vh;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				position: relative;
-				padding: 0;
-				overflow: hidden;
-				width: 100%;
-				&::before {
-					content: '';
-					position: absolute;
-					top: 0;
-					left: 0;
-					right: 0;
-					bottom: 0;
-					background: var(--portalBg1) center/cover;
-					opacity: 0.1;
-					mix-blend-mode: overlay;
-					animation: portalPulse 15s ease-in-out infinite;
-				}
-				&::after {
-					content: '';
-					position: absolute;
-					top: 0;
-					left: 0;
-					right: 0;
-					bottom: 0;
-					background: var(--portalBg2) center/cover;
-					opacity: 0.1;
-					mix-blend-mode: color-dodge;
-					animation: portalPulse 20s ease-in-out infinite reverse;
-				}
-			}
+		.hero {
+			width: 100%;
+			position: relative;
+			padding: 0;
+		}
 
-			@keyframes portalPulse {
-				0%, 100% { opacity: 0.1; transform: scale(1); }
-				50% { opacity: 0.15; transform: scale(1.1); }
-			}
+		.hero-carousel-wrapper {
+			width: 100%;
+			overflow: hidden;
+			position: relative;
+		}
 
-			.hero-content {
-				width: 100%;
-				max-width: 2400px;
-				margin: 0 auto;
-				padding: 4rem 2rem;
-				display: flex;
-				align-items: center;
-				gap: 4rem;
-				text-align: left;
-				position: relative;
-				z-index: 2;
-				backdrop-filter: blur(10px);
-				background: rgba(var(--primary-dark-rgb), 0.3);
-				border-top: 1px solid rgba(var(--secondary-rgb), 0.1);
-				border-bottom: 1px solid rgba(var(--secondary-rgb), 0.1);
-			}
+		.hero-carousel-wrapper :global(.splide__slide) {
+			position: relative;
+			width: 100%;
+			aspect-ratio: 16 / 7;
+			overflow: hidden;
+		}
 
-			.hero-text {
-				flex: 1;
-			}
+		.slide-bg {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+			animation: productFloat 26s ease-in-out infinite;
+		}
 
-			.hero-image {
-				flex: 1;
-				position: relative;
-				&::before {
-					content: '';
-					position: absolute;
-					top: -20px;
-					left: -20px;
-					right: -20px;
-					bottom: -20px;
-					background: radial-gradient(circle at center, var(--glow) 0%, transparent 70%);
-					z-index: -1;
-					animation: glowPulse 4s ease-in-out infinite;
-				}
-			}
+		.slide-overlay {
+			position: absolute;
+			inset: -20px;
+			background: linear-gradient(
+				to right,
+				rgba(0, 0, 0, 0.7) 0%,
+				rgba(0, 0, 0, 0.4) 50%,
+				rgba(0, 0, 0, 0.1) 100%
+			);
+		}
 
-			@keyframes glowPulse {
-				0%, 100% { transform: scale(1); opacity: 0.5; }
-				50% { transform: scale(1.1); opacity: 0.8; }
-			}
+		.slide-content {
+			position: absolute;
+			inset: 0;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			padding: 4rem 6rem;
+			z-index: 2;
+			max-width: 700px;
+		}
 
-			.hero-image #hero-slider {
-				border-radius: 20px;
-				overflow: hidden;
-				aspect-ratio: 1 / 1;
-				box-shadow: 
-					0 0 20px var(--glow),
-					0 0 40px var(--glow);
-				animation: productFloat 8s ease-in-out infinite;
-			}
+		.slide-subtitle {
+			color: var(--secondary);
+			font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 2px;
+			margin-bottom: 0.75rem;
+		}
 
-			.hero-image :global(.splide__slide) img {
-				width: 100%;
-				height: 100%;
-				object-fit: cover;
-				display: block;
-			}
+		.slide-title {
+			color: #fff;
+			font-size: clamp(2rem, 5vw, 4rem);
+			font-weight: 900;
+			text-transform: uppercase;
+			line-height: 1.05;
+			margin: 0 0 1.5rem 0;
+			text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+		}
 
-			.hero-image :global(.splide__pagination) {
-				bottom: 0.75rem;
-				gap: 0.35rem;
-			}
+		.slide-cta {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.4rem;
+			color: var(--secondary);
+			text-decoration: none;
+			font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			transition: gap 0.3s ease;
+		}
 
-			.hero-image :global(.splide__pagination__page) {
-				background: rgba(255, 255, 255, 0.4);
-				width: 8px;
-				height: 8px;
-				border: none;
-				transition: background 0.3s ease, transform 0.3s ease;
-			}
+		.slide-cta:hover {
+			gap: 0.8rem;
+		}
 
-			.hero-image :global(.splide__pagination__page.is-active) {
-				background: var(--secondary);
-				transform: scale(1.3);
-			}
+		.cta-arrow {
+			font-size: 1.4em;
+			line-height: 1;
+		}
 
-			@keyframes productFloat {
-				0%, 100% { transform: translateY(0) rotate(0deg); }
-				25% { transform: translateY(-10px) rotate(2deg); }
-				75% { transform: translateY(10px) rotate(-2deg); }
-			}
+		.hero-carousel-wrapper :global(.splide__pagination) {
+			bottom: 1.5rem;
+			gap: 0.5rem;
+		}
 
-			@keyframes float {
-				0%, 100% { transform: translateY(0); }
-				50% { transform: translateY(-20px); }
-			}
+		.hero-carousel-wrapper :global(.splide__pagination__page) {
+			background: rgba(255, 255, 255, 0.4);
+			width: 10px;
+			height: 10px;
+			border: none;
+			transition: background 0.3s ease, transform 0.3s ease;
+		}
 
-			.hero h1 {
-				margin: 0;
-				line-height: 0;
-			}
+		.hero-carousel-wrapper :global(.splide__pagination__page.is-active) {
+			background: var(--secondary);
+			transform: scale(1.3);
+		}
 
-			.hero-logo {
-				max-width: clamp(200px, 40vw, 500px);
-				height: auto;
-				filter: drop-shadow(0 0 10px var(--glow)) drop-shadow(0 0 20px var(--glow));
-				animation: pulse 4s ease-in-out infinite;
-			}
-
-			@keyframes pulse {
-				0%, 100% { filter: drop-shadow(0 0 10px var(--glow)) drop-shadow(0 0 20px var(--glow)); }
-				50% { filter: drop-shadow(0 0 20px var(--glow)) drop-shadow(0 0 40px var(--glow)); }
-			}
-
-			.hero p {
-				font-size: clamp(1.5rem, 3vw, 2rem);
-				margin: 2rem auto;
-				max-width: 800px;
-				line-height: 1.4;
-				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-			}
-
-			.cta-button {
-				display: inline-block;
-				background: var(--secondary);
-				color: var(--primary-dark);
-				padding: 1.5rem 3rem;
-				border-radius: 50px;
-				font-size: 1.5rem;
-				font-weight: bold;
-				text-decoration: none;
-				transition: all 0.3s ease;
-				position: relative;
-				overflow: hidden;
-				margin-top: 2rem;
-				text-transform: uppercase;
-				letter-spacing: 2px;
-				box-shadow: 
-					0 0 10px var(--glow),
-					0 0 20px var(--glow);
-				backdrop-filter: blur(5px);
-			}
-
-			.cta-button:hover {
-				transform: scale(1.05) translateY(-5px);
-				background: #a8e650;
-				box-shadow: 
-					0 0 20px var(--glow),
-					0 0 40px var(--glow);
-			}
-
-			.cta-button::before {
-				content: '';
-				position: absolute;
-				top: -50%;
-				left: -50%;
-				width: 200%;
-				height: 200%;
-				background: rgba(255, 255, 255, 0.1);
-				transform: rotate(45deg);
-				animation: shine 3s infinite;
-			}
-
-			@keyframes shine {
-				0% { transform: translateX(-100%) rotate(45deg); }
-				100% { transform: translateX(100%) rotate(45deg); }
-			}
+		@keyframes productFloat {
+			0%, 100% { transform: scale(1.15) translateY(0) rotate(0deg); }
+			25% { transform: scale(1.15) translateY(-10px) rotate(2deg); }
+			75% { transform: scale(1.15) translateY(10px) rotate(-2deg); }
+		}
 
 			.features, .testimonials, .specs {
 				width: 100%;
@@ -633,120 +548,91 @@ const hdImages = {
 				backdrop-filter: blur(5px);
 			}
 
-			@media (max-width: 1024px) {
-				.hero-content {
-					flex-direction: column-reverse;
-					text-align: center;
-					padding: 2rem;
-				}
-
-				.hero-image {
-					max-width: 80%;
-				}
-
-				.features-grid, .testimonials-grid, .specs-grid {
-					grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-					padding: 0 1rem;
-				}
+		@media (max-width: 1024px) {
+			.features-grid, .testimonials-grid, .specs-grid {
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				padding: 0 1rem;
 			}
 
-			@media (max-width: 768px) {
-				.container {
-					padding: 0 1rem;
-				}
-
-				.hero-content {
-					padding: 2rem 1rem;
-				}
-
-				.hero-logo {
-					max-width: 200px;
-				}
-
-				.hero p {
-					font-size: 1.2rem;
-				}
-
-				.cta-button {
-					padding: 1rem 2rem;
-					font-size: 1.2rem;
-				}
-
-				.features, .testimonials, .specs {
-					padding: 4rem 0;
-				}
-
-				.features-grid, .testimonials-grid, .specs-grid {
-					grid-template-columns: 1fr;
-				}
-
-				section h2 {
-					font-size: 2rem;
-					margin-bottom: 2rem;
-				}
-
-				.blog-grid {
-					grid-template-columns: 1fr;
-					padding: 0 1rem;
-				}
+			.hero-carousel-wrapper :global(.splide__slide) {
+				aspect-ratio: 16 / 9;
 			}
 
-			@media (min-width: 2000px) {
-				.features-grid, .testimonials-grid, .specs-grid {
-					max-width: 2400px;
-					grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-				}
-
-				.hero-content {
-					max-width: 1600px;
-				}
-
-				.hero-logo {
-					max-width: 600px;
-				}
-
-				.hero p {
-					font-size: 2.5rem;
-					max-width: 1200px;
-				}
-
-				.cta-button {
-					font-size: 2rem;
-					padding: 2rem 4rem;
-				}
+			.slide-content {
+				padding: 3rem 4rem;
 			}
+		}
+
+		@media (max-width: 768px) {
+			.container {
+				padding: 0 1rem;
+			}
+
+			.hero-carousel-wrapper :global(.splide__slide) {
+				aspect-ratio: 4 / 3;
+			}
+
+			.slide-content {
+				padding: 2rem;
+				max-width: 100%;
+			}
+
+			.features, .testimonials, .specs {
+				padding: 4rem 0;
+			}
+
+			.features-grid, .testimonials-grid, .specs-grid {
+				grid-template-columns: 1fr;
+			}
+
+			section h2 {
+				font-size: 2rem;
+				margin-bottom: 2rem;
+			}
+
+			.blog-grid {
+				grid-template-columns: 1fr;
+				padding: 0 1rem;
+			}
+		}
+
+		@media (min-width: 2000px) {
+			.features-grid, .testimonials-grid, .specs-grid {
+				max-width: 2400px;
+				grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+			}
+		}
 		</style>
 	</head>
 	<body>
 		<div class="portal-bg"></div>
 		<main>
-			<section class="hero">
-				<div class="hero-content">
-					<div class="hero-text">
-						<h1>
-							<img src={logoMain.src} alt="CSS Store - Medias con Estilo" class="hero-logo" width={logoMain.width} height={logoMain.height} />
-						</h1>
-						<p class="tagline">{product.tagline}</p>
-						<p class="description">{product.description}</p>
-						<a href={product.callToAction.url} class="cta-button">
-							{product.callToAction.text}
-						</a>
-					</div>
-				<div class="hero-image">
-					<div class="splide" id="hero-slider" aria-label="Galería de productos CSS Store">
-						<div class="splide__track">
-							<ul class="splide__list">
-								{sliderImages.map((img, i) => (
+		<section class="hero">
+			<div class="hero-carousel-wrapper">
+				<div class="splide" id="hero-slider" aria-label="Galería de productos CSS Store">
+					<div class="splide__track">
+						<ul class="splide__list">
+							{sliderImages.map((img, i) => {
+								const slide = product.heroSlides[i] || product.heroSlides[0];
+								return (
 									<li class="splide__slide">
-										<img src={img.src} width={img.width} height={img.height} alt={`CSS Store - Producto ${i + 1}`} />
+										<img src={img.src} width={img.width} height={img.height} alt={`CSS Store - ${slide.title}`} class="slide-bg" />
+										<div class="slide-overlay" />
+										<div class="slide-content">
+											<span class="slide-subtitle">{slide.subtitle}</span>
+											<h2 class="slide-title">{slide.title}</h2>
+											<a href={slide.linkUrl} class="slide-cta">
+												{slide.linkText} <span class="cta-arrow">›</span>
+											</a>
+										</div>
 									</li>
-								))}
-							</ul>
-						</div>
+								);
+							})}
+						</ul>
 					</div>
 				</div>
-				</div>
-			</section>
+			</div>
+		</section>
 
 			<section class="features">
 				<div class="container">
@@ -838,22 +724,23 @@ const hdImages = {
 			</footer>
 		</main>
 		<script>
-			import Splide from '@splidejs/splide';
-			import '@splidejs/splide/css/core';
+		import Splide from '@splidejs/splide';
+		import '@splidejs/splide/css/core';
 
-			document.addEventListener('DOMContentLoaded', () => {
-				new Splide('#hero-slider', {
-					type: 'fade',
-					rewind: true,
-					autoplay: true,
-					interval: 4000,
-					speed: 1200,
-					pauseOnHover: true,
-					arrows: false,
-					pagination: true,
-					drag: true,
-				}).mount();
-			});
+		document.addEventListener('DOMContentLoaded', () => {
+			new Splide('#hero-slider', {
+				type: 'fade',
+				rewind: true,
+				autoplay: true,
+				interval: 5000,
+				speed: 1000,
+				pauseOnHover: false,
+				arrows: false,
+				pagination: true,
+				drag: true,
+				width: '100%',
+			}).mount();
+		});
 		</script>
 	</body>
 </html>

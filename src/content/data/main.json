@@ -7,6 +7,32 @@
       "title": "CSS Store - Medias y Ropa Deportiva",
       "url": ""
     },
+    "heroSlides": [
+      {
+        "title": "Medias con Estilo",
+        "subtitle": "Diseños exclusivos que no vas a encontrar en otro lado",
+        "linkText": "Ver Colección",
+        "linkUrl": "/shop/coleccion"
+      },
+      {
+        "title": "Nueva Temporada",
+        "subtitle": "Descubrí los nuevos diseños para este verano",
+        "linkText": "Ver Novedades",
+        "linkUrl": "/shop/coleccion"
+      },
+      {
+        "title": "Ropa Deportiva",
+        "subtitle": "Rendimiento y comodidad para tu entrenamiento",
+        "linkText": "Explorar",
+        "linkUrl": "/shop/coleccion"
+      },
+      {
+        "title": "Envío Gratis",
+        "subtitle": "En pedidos a Montevideo. Envíos a todo el país",
+        "linkText": "Comprar Ahora",
+        "linkUrl": "/shop/coleccion"
+      }
+    ],
     "description": "Descubrí nuestra colección de medias y ropa deportiva con diseños únicos. Calidad, comodidad y estilo para tu día a día.",
     "features": [
       {
