@@ -1,5 +1,5 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
-export const SITE_TITLE = 'Plumbus - The Universal Household Essential';
-export const SITE_DESCRIPTION = 'Everyone has a Plumbus, but no one knows why. Discover the only all-purpose device approved across dimensions. Grown, not manufactured. 100% confusing. Get yours today!';
+export const SITE_TITLE = 'CSS Store Uruguay | Medias con Estilo y Ropa Deportiva';
+export const SITE_DESCRIPTION = 'Tienda online de medias con diseños exclusivos y ropa deportiva en Uruguay. Calidad, comodidad y estilo. Envíos a todo el país.';

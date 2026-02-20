@@ -5,6 +5,8 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import productData from '../content/data/main.json';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
+import logoMain from '../assets/images/brand/logo.png';
+import logoFooter from '../assets/images/brand/logo-footer.png';
 
 const { product, seo } = productData;
 
@@ -29,7 +31,7 @@ const hdImages = {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<BaseHead title={seo.title} description={seo.description} />
 		<style define:vars={{
@@ -213,21 +215,20 @@ const hdImages = {
 			}
 
 			.hero h1 {
-				font-size: clamp(4rem, 10vw, 8rem);
-				color: var(--secondary);
 				margin: 0;
-				text-shadow: 
-					0 0 10px var(--glow),
-					0 0 20px var(--glow),
-					0 0 40px var(--glow);
+				line-height: 0;
+			}
+
+			.hero-logo {
+				max-width: clamp(200px, 40vw, 500px);
+				height: auto;
+				filter: drop-shadow(0 0 10px var(--glow)) drop-shadow(0 0 20px var(--glow));
 				animation: pulse 4s ease-in-out infinite;
-				letter-spacing: -2px;
-				line-height: 0.9;
 			}
 
 			@keyframes pulse {
-				0%, 100% { text-shadow: 0 0 10px var(--glow), 0 0 20px var(--glow), 0 0 40px var(--glow); }
-				50% { text-shadow: 0 0 20px var(--glow), 0 0 40px var(--glow), 0 0 60px var(--glow); }
+				0%, 100% { filter: drop-shadow(0 0 10px var(--glow)) drop-shadow(0 0 20px var(--glow)); }
+				50% { filter: drop-shadow(0 0 20px var(--glow)) drop-shadow(0 0 40px var(--glow)); }
 			}
 
 			.hero p {
@@ -606,6 +607,20 @@ const hdImages = {
 				transform: translateY(-3px);
 			}
 
+			.footer-logo {
+				margin-bottom: 2rem;
+			}
+
+			.footer-logo a {
+				display: inline-block;
+			}
+
+			.footer-logo-img {
+				max-height: 80px;
+				width: auto;
+				object-fit: contain;
+			}
+
 			.disclaimer {
 				max-width: 1200px;
 				margin: 2rem auto;
@@ -644,8 +659,8 @@ const hdImages = {
 					padding: 2rem 1rem;
 				}
 
-				.hero h1 {
-					font-size: 3rem;
+				.hero-logo {
+					max-width: 200px;
 				}
 
 				.hero p {
@@ -686,8 +701,8 @@ const hdImages = {
 					max-width: 1600px;
 				}
 
-				.hero h1 {
-					font-size: 10rem;
+				.hero-logo {
+					max-width: 600px;
 				}
 
 				.hero p {
@@ -708,7 +723,9 @@ const hdImages = {
 			<section class="hero">
 				<div class="hero-content">
 					<div class="hero-text">
-						<h1>{product.name}</h1>
+						<h1>
+							<img src={logoMain.src} alt="CSS Store - Medias con Estilo" class="hero-logo" width={logoMain.width} height={logoMain.height} />
+						</h1>
 						<p class="tagline">{product.tagline}</p>
 						<p class="description">{product.description}</p>
 						<a href={product.callToAction.url} class="cta-button">
@@ -716,12 +733,12 @@ const hdImages = {
 						</a>
 					</div>
 				<div class="hero-image">
-					<div class="splide" id="hero-slider" aria-label="Product Slider">
+					<div class="splide" id="hero-slider" aria-label="Galería de productos CSS Store">
 						<div class="splide__track">
 							<ul class="splide__list">
 								{sliderImages.map((img, i) => (
 									<li class="splide__slide">
-										<img src={img.src} width={img.width} height={img.height} alt={`Product shot ${i + 1}`} />
+										<img src={img.src} width={img.width} height={img.height} alt={`CSS Store - Producto ${i + 1}`} />
 									</li>
 								))}
 							</ul>
@@ -733,7 +750,7 @@ const hdImages = {
 
 			<section class="features">
 				<div class="container">
-					<h2>Interdimensional Features</h2>
+					<h2>Nuestros Productos</h2>
 					<div class="features-grid">
 						{product.features.map((feature) => (
 							<div class="feature-card">
@@ -747,7 +764,7 @@ const hdImages = {
 
 			<section class="testimonials">
 				<div class="container">
-					<h2>Multiversal Reviews</h2>
+					<h2>Lo Que Dicen Nuestros Clientes</h2>
 					<div class="testimonials-grid">
 						{product.testimonials.map((testimonial) => (
 							<div class="testimonial-card">
@@ -761,7 +778,7 @@ const hdImages = {
 
 			<section class="specs">
 				<div class="container">
-					<h2>Quantum Specifications</h2>
+					<h2>Información del Producto</h2>
 					<div class="specs-grid">
 						{Object.entries(product.specs).map(([key, value]) => (
 							<div class="spec-item">
@@ -775,7 +792,7 @@ const hdImages = {
 
 			<section class="blog-section">
 				<div class="container">
-					<h2>Interdimensional Blog</h2>
+					<h2>Nuestro Blog</h2>
 					<div class="blog-grid">
 						{posts.map((post) => (
 							<a href={`/blog/${post.id}/`} class="blog-link">
@@ -803,6 +820,11 @@ const hdImages = {
 
 		<footer>
 				<div class="container">
+					<div class="footer-logo">
+						<a href="/">
+							<img src={logoFooter.src} alt="CSS Store Uruguay" class="footer-logo-img" width={logoFooter.width} height={logoFooter.height} />
+						</a>
+					</div>
 					<div class="social-links">
 						{product.footer.socialLinks.map((link) => (
 							<a href={link.url} target="_blank" rel="noopener noreferrer">
@@ -811,7 +833,7 @@ const hdImages = {
 						))}
 					</div>
 					<p class="disclaimer">{product.footer.legalDisclaimer}</p>
-					<p>Contact: <a href={`mailto:${product.footer.contactEmail}`}>{product.footer.contactEmail}</a></p>
+					<p>Contacto: <a href={`mailto:${product.footer.contactEmail}`}>{product.footer.contactEmail}</a></p>
 				</div>
 			</footer>
 		</main>

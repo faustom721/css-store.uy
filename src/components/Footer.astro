@@ -1,11 +1,18 @@
 ---
+import logoFooter from '../assets/images/brand/logo-footer.png';
+
 const today = new Date();
 ---
 
 <footer>
 	<div class="footer-content">
+		<div class="footer-logo">
+			<a href="/">
+				<img src={logoFooter.src} alt="CSS Store Uruguay" width="120" height="auto" />
+			</a>
+		</div>
 		<div class="copyright">
-			&copy; {today.getFullYear()} Plumbus Industries. All rights reserved across infinite dimensions.
+			&copy; {today.getFullYear()} CSS Store Uruguay. Todos los derechos reservados.
 		</div>
 	</div>
 </footer>
@@ -29,6 +36,22 @@ const today = new Date();
 		align-items: center;
 		flex-wrap: wrap;
 		gap: 1rem;
+	}
+
+	.footer-logo {
+		display: flex;
+		align-items: center;
+	}
+
+	.footer-logo a {
+		display: flex;
+		align-items: center;
+	}
+
+	.footer-logo img {
+		max-height: 50px;
+		width: auto;
+		object-fit: contain;
 	}
 
 	.copyright {

@@ -1,18 +1,18 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
 import { SITE_TITLE } from '../consts';
+import productData from '../content/data/main.json';
 
 interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	keywords?: string[];
 }
 
+const { seo } = productData;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const { title, description, image = '/blog-placeholder-1.jpg', keywords = seo.keywords } = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -27,6 +27,16 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 	href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
+
+<!-- Language & Region -->
+<meta name="language" content="es" />
+<meta name="geo.region" content="UY" />
+<meta name="geo.placename" content="Montevideo, Uruguay" />
+<meta name="author" content={seo.author} />
+<meta name="robots" content={seo.robots} />
+
+<!-- Keywords -->
+{keywords && <meta name="keywords" content={keywords.join(', ')} />}
 
 <!-- Font preloads -->
 <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
@@ -46,6 +56,8 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:site_name" content="CSS Store Uruguay" />
+<meta property="og:locale" content="es_UY" />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
@@ -53,3 +65,6 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<!-- Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(seo.structuredData)} />
