@@ -148,7 +148,7 @@
       "og:description": "Descubrí nuestra colección de medias con diseños exclusivos y ropa deportiva. Calidad y estilo en cada producto. Envíos a todo Uruguay.",
       "og:type": "website",
       "og:url": "https://css-store.uy",
-      "og:image": "https://css-store.uy/og-image.jpg",
+      "og:image": "https://css-store.uy/android-chrome-512x512.png",
       "og:site_name": "CSS Store Uruguay",
       "og:locale": "es_UY"
     },
@@ -158,13 +158,13 @@
       "creator": "@css_store_uy",
       "title": "CSS Store Uruguay | Medias con Estilo",
       "description": "Medias con diseños exclusivos y ropa deportiva. Calidad y comodidad. Envíos a todo Uruguay.",
-      "image": "https://css-store.uy/og-image.jpg"
+      "image": "https://css-store.uy/android-chrome-512x512.png"
     },
     "structuredData": {
       "@context": "https://schema.org",
       "@type": "Store",
       "name": "CSS Store Uruguay",
-      "image": "https://css-store.uy/og-image.jpg",
+      "image": "https://css-store.uy/android-chrome-512x512.png",
       "description": "Tienda online de medias con diseños exclusivos y ropa deportiva en Uruguay.",
       "brand": {
         "@type": "Brand",
