@@ -37,27 +37,19 @@
     "features": [
       {
         "title": "Diseños Exclusivos",
-        "description": "Medias con estampados únicos que no vas a encontrar en otro lado. Expresá tu estilo en cada paso."
+        "description": "Medias con diseños únicos que no vas a encontrar en otro lado. Expresá tu estilo en cada paso."
       },
       {
         "title": "Comodidad Premium",
-        "description": "Materiales de primera calidad que cuidan tus pies durante todo el día. Suaves, transpirables y duraderas."
+        "description": "Materiales de primera calidad, medias tejidas con técnica jacquard que cuidan tus pies durante todo el día. Suaves, transpirables y duraderas."
       },
       {
-        "title": "Ropa Deportiva",
-        "description": "Línea deportiva pensada para el rendimiento y la comodidad. Ideal para entrenar con estilo."
-      },
-      {
-        "title": "Envíos a Todo Uruguay",
-        "description": "Recibí tus pedidos en la puerta de tu casa. Envíos a Montevideo y todo el interior."
+        "title": "Envíos a todo Uruguay",
+        "description": "Recibí tus pedidos en la puerta de tu casa. Envíos gratis en compras superiores a $1200"
       },
       {
         "title": "Calidad Garantizada",
-        "description": "Productos seleccionados con los más altos estándares de calidad. Durabilidad que se nota."
-      },
-      {
-        "title": "Atención Personalizada",
-        "description": "Te asesoramos para encontrar el producto perfecto. Escribinos por Instagram o WhatsApp."
+        "description": "Probamos cada producto que vendemos. Calidad garantizada y devolución del dinero si no quedás conforme."
       }
     ],
     "callToAction": {
@@ -71,7 +63,7 @@
       },
       {
         "name": "Santiago R.",
-        "quote": "La ropa deportiva es de excelente calidad. Ya hice varios pedidos y siempre quedo conforme."
+        "quote": "Los shorts de baño son de excelente calidad. Ya hice varios pedidos y siempre quedo conforme."
       },
       {
         "name": "Lucía M.",
@@ -82,37 +74,9 @@
         "quote": "Envío rápido y muy buena atención. Los recomiendo totalmente."
       }
     ],
-    "specs": {
-      "Material": "Algodón premium, poliéster y elastano",
-      "Talles": "Disponibles del 35 al 45",
-      "Cuidado": "Lavado a máquina, no usar secadora",
-      "Envíos": "A todo Uruguay, envío gratis en Montevideo",
-      "Cambios": "Cambios sin costo dentro de los 30 días"
-    },
-    "faq": [
-      {
-        "question": "¿Hacen envíos al interior?",
-        "answer": "Sí, hacemos envíos a todo Uruguay a través de las principales agencias de encomiendas."
-      },
-      {
-        "question": "¿Cuánto demora el envío?",
-        "answer": "En Montevideo 24-48hs. Interior del país 3-5 días hábiles."
-      },
-      {
-        "question": "¿Puedo hacer cambios?",
-        "answer": "Sí, aceptamos cambios dentro de los 30 días de la compra, con el producto sin uso y con etiqueta."
-      },
-      {
-        "question": "¿Qué métodos de pago aceptan?",
-        "answer": "Transferencia bancaria, MercadoPago, y efectivo contra entrega en Montevideo."
-      },
-      {
-        "question": "¿Tienen local físico?",
-        "answer": "Por el momento somos una tienda online. Podés ver todos nuestros productos en Instagram."
-      }
-    ],
+    "mercadolibreUrl": "https://listado.mercadolibre.com.uy/_CustId_123456789",
     "footer": {
-      "legalDisclaimer": "CSS Store Uruguay. Todos los precios incluyen IVA. Las imágenes son ilustrativas. Consultar disponibilidad de talles y colores.",
+      "legalDisclaimer": "CSS Store. Si tienes alguna duda, contactanos a través de Instagram o WhatsApp.",
       "socialLinks": [
         { "platform": "Instagram", "url": "https://www.instagram.com/css_store_uy/" },
         { "platform": "Twitter", "url": "https://twitter.com/temaprint" },

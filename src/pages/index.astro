@@ -7,792 +7,932 @@ import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 import logoMain from '../assets/images/brand/logo.png';
 import logoFooter from '../assets/images/brand/logo-footer.png';
+import mercadolibreLogo from '../assets/images/mercadolibre-logo.png';
 
 const { product, seo } = productData;
 
 // Get blog posts
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // Slider images from assets
-const sliderImageImports = import.meta.glob<{ default: ImageMetadata }>(
-	'../assets/images/slider/*.*',
-	{ eager: true }
-);
+const sliderImageImports = import.meta.glob<{ default: ImageMetadata }>('../assets/images/slider/*.*', { eager: true });
 const sliderImages = Object.values(sliderImageImports).map((mod) => mod.default);
 
 // HD Image URLs
 const hdImages = {
-  portal1: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=2048&q=95",
-  portal2: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=2048&q=95",
-  texture: "https://images.unsplash.com/photo-1579546929662-711aa81148cf?w=2048&q=95",
+  portal1: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=2048&q=95',
+  portal2: 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=2048&q=95',
+  texture: 'https://images.unsplash.com/photo-1579546929662-711aa81148cf?w=2048&q=95',
 };
 ---
 
 <!doctype html>
-<html lang="es">
-	<head>
-		<BaseHead title={seo.title} description={seo.description} />
-		<style define:vars={{
-			portalBg1: `url(${hdImages.portal1})`,
-			portalBg2: `url(${hdImages.portal2})`,
-			textureBg: `url(${hdImages.texture})`
-		}}>
-			html {
-				overflow-x: hidden;
-			}
-			body {
-				margin: 0;
-				font-family: 'Atkinson', sans-serif;
-				background: var(--background);
-				color: var(--text);
-				overflow-x: hidden;
-			}
-
-			main {
-				width: 100%;
-				max-width: 100%;
-				margin: 0;
-				padding: 0;
-			}
-
-			.container {
-				max-width: 2400px;
-				margin: 0 auto;
-				padding: 0 2rem;
-			}
-
-			.portal-bg {
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background: 
-					radial-gradient(circle at 10% 20%, rgba(var(--primary-rgb), 0.4) 0%, transparent 50%),
-					radial-gradient(circle at 90% 80%, rgba(var(--secondary-rgb), 0.2) 0%, transparent 50%),
-					var(--background);
-				z-index: -1;
-				&::before {
-					content: '';
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100%;
-					background: var(--textureBg) center/cover;
-					opacity: 0.05;
-					mix-blend-mode: overlay;
-				}
-			}
-
-		.hero {
-			width: 100%;
-			position: relative;
-			padding: 0;
-		}
-
-		.hero-carousel-wrapper {
-			width: 100%;
-			overflow: hidden;
-			position: relative;
-		}
-
-		.hero-carousel-wrapper :global(.splide__slide) {
-			position: relative;
-			width: 100%;
-			aspect-ratio: 16 / 7;
-			overflow: hidden;
-		}
-
-		.slide-bg {
-			position: absolute;
-			inset: 0;
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			display: block;
-			animation: productFloat 26s ease-in-out infinite;
-		}
-
-		.slide-overlay {
-			position: absolute;
-			inset: 0;
-			background: linear-gradient(
-				to right,
-				rgba(0, 0, 0, 0.8) 0%,
-				rgba(0, 0, 0, 0.5) 50%,
-				rgba(0, 0, 0, 0.25) 100%
-			);
-		}
-
-		.slide-content {
-			position: absolute;
-			inset: 0;
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-end;
-			padding: 8rem 6rem;
-			z-index: 2;
-			max-width: 700px;
-		}
-
-		.slide-logo {
-			position: absolute;
-			top: 1.5rem;
-			left: 50%;
-			transform: translateX(-50%);
-			max-width: clamp(80px, 12vw, 160px);
-			height: auto;
-			z-index: 3;
-			filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
-		}
-
-		.slide-subtitle {
-			color: var(--secondary);
-			font-size: clamp(0.9rem, 1.5vw, 1.2rem);
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 2px;
-			margin-bottom: 0.75rem;
-			text-shadow:
-				0 0 6px rgba(0, 0, 0, 0.9),
-				0 0 14px rgba(0, 0, 0, 0.6),
-				0 2px 20px rgba(0, 0, 0, 0.5);
-		}
-
-		.slide-title {
-			color: #fff;
-			font-size: clamp(2rem, 5vw, 4rem);
-			font-weight: 900;
-			text-transform: uppercase;
-			line-height: 1.05;
-			margin: 0 0 1.5rem 0;
-			text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-		}
-
-		.slide-cta {
-			display: inline-flex;
-			align-items: center;
-			gap: 0.4rem;
-			color: var(--secondary);
-			text-decoration: none;
-			font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 1px;
-			transition: gap 0.3s ease;
-			text-shadow:
-				0 0 6px rgba(0, 0, 0, 0.9),
-				0 0 14px rgba(0, 0, 0, 0.6),
-				0 2px 20px rgba(0, 0, 0, 0.5);
-		}
-
-		.slide-cta:hover {
-			gap: 0.8rem;
-		}
-
-		.cta-arrow {
-			font-size: 1.4em;
-			line-height: 1;
-		}
-
-
-		@keyframes productFloat {
-			0%, 100% { transform: scale(1.15) translateY(0) rotate(0deg); }
-			25% { transform: scale(1.15) translateY(-10px) rotate(2deg); }
-			75% { transform: scale(1.15) translateY(10px) rotate(-2deg); }
-		}
-
-			.features, .testimonials, .specs {
-				width: 100%;
-				padding: 8rem 0;
-			}
-
-			.features {
-				position: relative;
-				overflow-x: hidden;
-				&::before {
-					content: '';
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100%;
-					background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-					clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
-					z-index: 0;
-				}
-				&::after {
-					content: '';
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100%;
-					background: var(--textureBg) center/cover;
-					opacity: 0.05;
-					mix-blend-mode: overlay;
-					clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
-					z-index: 0;
-					pointer-events: none;
-				}
-				.container {
-					position: relative;
-					z-index: 1;
-					text-align: center;
-				}
-			}
-
-			.features h2,
-			.testimonials h2,
-			.specs h2,
-			.blog-section h2 {
-				color: #fff;
-				text-align: center;
-				margin-bottom: 2.5rem;
-			}
-
-			.features-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-				gap: 3rem;
-				padding: 0 2rem;
-				max-width: 2400px;
-				margin: 0 auto;
-				justify-content: center;
-			}
-
-			.feature-card {
-				background: rgba(var(--primary-dark-rgb), 0.8);
-				padding: 2rem;
-				border-radius: 20px;
-				transition: all 0.3s ease;
-				backdrop-filter: blur(10px);
-				border: 1px solid rgba(var(--secondary-rgb), 0.2);
-				position: relative;
-				overflow: hidden;
-				min-height: 250px;
-				min-width: 0;
-				display: flex;
-				flex-direction: column;
-				justify-content: flex-start;
-				gap: 1rem;
-			}
-
-			.feature-card::before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background: linear-gradient(45deg, transparent, rgba(var(--secondary-rgb), 0.1), transparent);
-				transform: translateX(-100%);
-				transition: 0.5s;
-			}
-
-			.feature-card:hover {
-				transform: translateY(-10px) scale(1.02);
-				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-			}
-
-			.feature-card:hover::before {
-				transform: translateX(100%);
-			}
-
-			.feature-card h3 {
-				color: var(--secondary);
-				font-size: 1.5rem;
-				margin: 0;
-				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-				line-height: 1.3;
-			}
-
-			.feature-card p {
-				margin: 0;
-				line-height: 1.6;
-				flex-grow: 1;
-			}
-
-			.testimonials {
-				background: var(--background);
-				position: relative;
-				&::before {
-					content: '';
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100%;
-					background: 
-						radial-gradient(circle at 20% 30%, rgba(var(--secondary-rgb), 0.1) 0%, transparent 70%),
-						radial-gradient(circle at 80% 70%, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
-				}
-			}
-
-			.testimonials-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-				gap: 2rem;
-				padding: 0 2rem;
-				max-width: 2400px;
-				margin: 0 auto;
-				justify-content: center;
-			}
-
-			.testimonial-card {
-				background: rgba(var(--primary-rgb), 0.3);
-				padding: 2rem;
-				border-radius: 20px;
-				backdrop-filter: blur(10px);
-				border: 1px solid rgba(var(--secondary-rgb), 0.1);
-				font-style: italic;
-				position: relative;
-				overflow: hidden;
-				height: 100%;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-				min-height: 200px;
-				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-				transition: transform 0.3s ease, box-shadow 0.3s ease;
-			}
-
-			.testimonial-card:hover {
-				transform: translateY(-5px);
-				box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-			}
-
-			.testimonial-card::after {
-				content: '"';
-				position: absolute;
-				bottom: -20px;
-				right: 20px;
-				font-size: 8rem;
-				color: rgba(var(--secondary-rgb), 0.1);
-				font-family: serif;
-				pointer-events: none;
-			}
-
-			.testimonial-quote {
-				margin: 0 0 1.5rem 0;
-				font-size: 1.1rem;
-				line-height: 1.6;
-				flex-grow: 1;
-			}
-
-			.testimonial-name {
-				color: var(--secondary);
-				margin-top: auto;
-				font-style: normal;
-				font-weight: bold;
-				font-size: 1.2rem;
-				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-				padding-top: 1rem;
-				border-top: 1px solid rgba(var(--secondary-rgb), 0.1);
-			}
-
-			.specs {
-				background: linear-gradient(45deg, var(--primary-dark) 0%, var(--primary) 100%);
-				clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
-				position: relative;
-				&::before {
-					content: '';
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100%;
-					background: var(--textureBg) center/cover;
-					opacity: 0.05;
-					mix-blend-mode: overlay;
-				}
-			}
-
-			.specs-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-				gap: 2rem;
-				padding: 0 2rem;
-				max-width: 2400px;
-				margin: 0 auto;
-				justify-content: center;
-			}
-
-			.spec-item {
-				text-align: center;
-				padding: 2rem;
-				background: rgba(var(--primary-dark-rgb), 0.5);
-				border-radius: 15px;
-				backdrop-filter: blur(5px);
-				border: 1px solid rgba(var(--secondary-rgb), 0.1);
-				transition: transform 0.3s ease;
-				height: 100%;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-			}
-
-			.spec-item:hover {
-				transform: translateY(-5px);
-			}
-
-			.spec-label {
-				color: var(--secondary);
-				font-weight: bold;
-				font-size: 1.2rem;
-				margin-bottom: 1rem;
-				text-transform: uppercase;
-				letter-spacing: 2px;
-			}
-
-			.spec-value {
-				font-size: 1.1rem;
-				line-height: 1.6;
-			}
-
-			.blog-section {
-				padding: 8rem 0;
-				background: var(--background);
-				position: relative;
-				&::before {
-					content: '';
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100%;
-					background: 
-						radial-gradient(circle at 20% 30%, rgba(var(--secondary-rgb), 0.1) 0%, transparent 70%),
-						radial-gradient(circle at 80% 70%, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
-				}
-			}
-
-			.blog-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-				gap: 2rem;
-				padding: 0 2rem;
-				max-width: 2400px;
-				margin: 0 auto;
-			}
-
-			.blog-card {
-				background: rgba(var(--primary-dark-rgb), 0.3);
-				border-radius: 20px;
-				overflow: hidden;
-				backdrop-filter: blur(10px);
-				border: 1px solid rgba(var(--secondary-rgb), 0.1);
-				transition: all 0.3s ease;
-				height: 100%;
-				display: flex;
-				flex-direction: column;
-			}
-
-			.blog-card:hover {
-				transform: translateY(-10px);
-				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-				border-color: rgba(var(--secondary-rgb), 0.3);
-			}
-
-			.blog-image {
-				width: 100%;
-				height: 200px;
-				object-fit: cover;
-			}
-
-			.blog-content {
-				padding: 1.5rem;
-				flex-grow: 1;
-				display: flex;
-				flex-direction: column;
-			}
-
-			.blog-title {
-				color: var(--secondary);
-				font-size: 1.5rem;
-				margin: 0 0 1rem 0;
-				line-height: 1.2;
-			}
-
-			.blog-date {
-				color: rgba(var(--text), 0.7);
-				font-size: 0.9rem;
-				margin-bottom: 1rem;
-			}
-
-			.blog-description {
-				color: var(--text);
-				margin: 0;
-				flex-grow: 1;
-			}
-
-			.blog-link {
-				text-decoration: none;
-				color: inherit;
-				display: block;
-				height: 100%;
-			}
-
-			footer {
-				background: var(--background);
-				padding: 6rem 2rem;
-				text-align: center;
-				position: relative;
-			}
-
-			.social-links {
-				display: flex;
-				justify-content: center;
-				gap: 2rem;
-				margin: 2rem 0;
-				flex-wrap: wrap;
-			}
-
-			.social-links a {
-				color: var(--secondary);
-				text-decoration: none;
-				font-size: 1.2rem;
-				transition: all 0.3s ease;
-				padding: 0.5rem 1rem;
-				border: 1px solid rgba(var(--secondary-rgb), 0.3);
-				border-radius: 5px;
-				backdrop-filter: blur(5px);
-			}
-
-			.social-links a:hover {
-				background: rgba(var(--secondary-rgb), 0.1);
-				transform: translateY(-3px);
-			}
-
-			.footer-logo {
-				margin-bottom: 2rem;
-			}
-
-			.footer-logo a {
-				display: inline-block;
-			}
-
-			.footer-logo-img {
-				max-height: 80px;
-				width: auto;
-				object-fit: contain;
-			}
-
-			.disclaimer {
-				max-width: 1200px;
-				margin: 2rem auto;
-				font-size: 0.9rem;
-				opacity: 0.8;
-				line-height: 1.6;
-				padding: 2rem;
-				background: rgba(var(--primary-dark-rgb), 0.3);
-				border-radius: 10px;
-				backdrop-filter: blur(5px);
-			}
-
-		@media (max-width: 1024px) {
-			.features-grid, .testimonials-grid, .specs-grid {
-				grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-				padding: 0 1rem;
-			}
-
-			.hero-carousel-wrapper :global(.splide__slide) {
-				aspect-ratio: 16 / 9;
-			}
-
-			.slide-content {
-				padding: 3rem 4rem;
-			}
-		}
-
-		@media (max-width: 768px) {
-			.slide-logo {
-				max-width: clamp(100px, 30vw, 140px);
-			}
-
-			.container {
-				padding: 0 1rem;
-			}
-
-			.hero-carousel-wrapper :global(.splide__slide) {
-				aspect-ratio: 9 / 14;
-			}
-
-			.slide-content {
-				padding: 2rem;
-				max-width: 100%;
-				align-items: center;
-			}
-
-			.features, .testimonials, .specs {
-				padding: 4rem 0;
-			}
-
-			.features-grid, .testimonials-grid, .specs-grid {
-				grid-template-columns: 1fr;
-				padding: 0 1rem;
-			}
-
-			section h2 {
-				font-size: 2rem;
-				margin-bottom: 2rem;
-			}
-
-			.blog-grid {
-				grid-template-columns: 1fr;
-				padding: 0 1rem;
-			}
-		}
-
-		@media (min-width: 2000px) {
-			.features-grid, .testimonials-grid, .specs-grid {
-				max-width: 2400px;
-				grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-			}
-		}
-		</style>
-	</head>
-	<body>
-		<div class="portal-bg"></div>
-		<main>
-		<section class="hero">
-			<div class="hero-carousel-wrapper">
-				<div class="splide" id="hero-slider" aria-label="Galería de productos CSS Store">
-					<div class="splide__track">
-						<ul class="splide__list">
-							{sliderImages.map((img, i) => {
-								const slide = product.heroSlides[i] || product.heroSlides[0];
-								return (
-									<li class="splide__slide">
-										<img src={img.src} width={img.width} height={img.height} alt={`CSS Store - ${slide.title}`} class="slide-bg" />
-										<div class="slide-overlay" />
-									<img src={logoMain.src} alt="CSS Store" class="slide-logo" width={logoMain.width} height={logoMain.height} />
-									<div class="slide-content">
-										<span class="slide-subtitle">{slide.subtitle}</span>
-											<h2 class="slide-title">{slide.title}</h2>
-											<a href={slide.linkUrl} class="slide-cta">
-												{slide.linkText} <span class="cta-arrow">›</span>
-											</a>
-										</div>
-									</li>
-								);
-							})}
-						</ul>
-					</div>
-				</div>
-			</div>
-		</section>
-
-			<section class="features">
-				<div class="container">
-					<h2>Nuestros Productos</h2>
-					<div class="features-grid">
-						{product.features.map((feature) => (
-							<div class="feature-card">
-								<h3>{feature.title}</h3>
-								<p>{feature.description}</p>
-							</div>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<section class="testimonials">
-				<div class="container">
-					<h2>Lo Que Dicen Nuestros Clientes</h2>
-					<div class="testimonials-grid">
-						{product.testimonials.map((testimonial) => (
-							<div class="testimonial-card">
-								<p class="testimonial-quote">"{testimonial.quote}"</p>
-								<div class="testimonial-name">- {testimonial.name}</div>
-							</div>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<section class="specs">
-				<div class="container">
-					<h2>Información del Producto</h2>
-					<div class="specs-grid">
-						{Object.entries(product.specs).map(([key, value]) => (
-							<div class="spec-item">
-								<div class="spec-label">{key}</div>
-								<div class="spec-value">{value}</div>
-							</div>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<section class="blog-section">
-				<div class="container">
-					<h2>Nuestro Blog</h2>
-					<div class="blog-grid">
-						{posts.map((post) => (
-							<a href={`/blog/${post.id}/`} class="blog-link">
-								<article class="blog-card">
-									<img 
-										src={post.data.heroImage} 
-										alt="" 
-										class="blog-image"
-									/>
-									<div class="blog-content">
-										<h3 class="blog-title">{post.data.title}</h3>
-										<div class="blog-date">
-											<FormattedDate date={post.data.pubDate} />
-										</div>
-										<p class="blog-description">{post.data.description}</p>
-									</div>
-								</article>
-							</a>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<InstagramFeed />
-
-		<footer>
-				<div class="container">
-					<div class="footer-logo">
-						<a href="/">
-							<img src={logoFooter.src} alt="CSS Store Uruguay" class="footer-logo-img" width={logoFooter.width} height={logoFooter.height} />
-						</a>
-					</div>
-					<div class="social-links">
-						{product.footer.socialLinks.map((link) => (
-							<a href={link.url} target="_blank" rel="noopener noreferrer">
-								{link.platform}
-							</a>
-						))}
-					</div>
-					<p class="disclaimer">{product.footer.legalDisclaimer}</p>
-					<p>Contacto: <a href={`mailto:${product.footer.contactEmail}`}>{product.footer.contactEmail}</a></p>
-				</div>
-			</footer>
-		</main>
-		<script>
-		import Splide from '@splidejs/splide';
-		import '@splidejs/splide/css/core';
-
-		document.addEventListener('DOMContentLoaded', () => {
-			new Splide('#hero-slider', {
-				type: 'fade',
-				rewind: true,
-				autoplay: true,
-				interval: 5000,
-				speed: 1000,
-				pauseOnHover: false,
-				arrows: false,
-				pagination: false,
-				drag: true,
-				width: '100%',
-			}).mount();
-		});
-		</script>
-	</body>
+<html lang='es'>
+  <head>
+    <BaseHead title={seo.title} description={seo.description} />
+    <style
+      define:vars={{
+        portalBg1: `url(${hdImages.portal1})`,
+        portalBg2: `url(${hdImages.portal2})`,
+        textureBg: `url(${hdImages.texture})`,
+      }}
+    >
+      html {
+        overflow-x: hidden;
+      }
+      body {
+        margin: 0;
+        font-family: 'Atkinson', sans-serif;
+        background: var(--background);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      main {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 2400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .portal-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background:
+          radial-gradient(circle at 10% 20%, rgba(var(--primary-rgb), 0.4) 0%, transparent 50%),
+          radial-gradient(circle at 90% 80%, rgba(var(--secondary-rgb), 0.2) 0%, transparent 50%), var(--background);
+        z-index: -1;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: var(--textureBg) center/cover;
+          opacity: 0.05;
+          mix-blend-mode: overlay;
+        }
+      }
+
+      .hero {
+        width: 100%;
+        position: relative;
+        padding: 0;
+      }
+
+      .hero-carousel-wrapper {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .hero-carousel-wrapper :global(.splide__slide) {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 7;
+        overflow: hidden;
+      }
+
+      .slide-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        animation: productFloat 26s ease-in-out infinite;
+      }
+
+      .slide-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.25) 100%);
+      }
+
+      .slide-content {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 8rem 6rem;
+        z-index: 2;
+        max-width: 700px;
+      }
+
+      .slide-logo {
+        position: absolute;
+        top: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: clamp(80px, 12vw, 160px);
+        height: auto;
+        z-index: 3;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+      }
+
+      .slide-subtitle {
+        color: var(--secondary);
+        font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 0.75rem;
+        text-shadow:
+          0 0 6px rgba(0, 0, 0, 0.9),
+          0 0 14px rgba(0, 0, 0, 0.6),
+          0 2px 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .slide-title {
+        color: #fff;
+        font-size: clamp(2rem, 5vw, 4rem);
+        font-weight: 900;
+        text-transform: uppercase;
+        line-height: 1.05;
+        margin: 0 0 1.5rem 0;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      }
+
+      .slide-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--secondary);
+        text-decoration: none;
+        font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: gap 0.3s ease;
+        text-shadow:
+          0 0 6px rgba(0, 0, 0, 0.9),
+          0 0 14px rgba(0, 0, 0, 0.6),
+          0 2px 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .slide-cta:hover {
+        gap: 0.8rem;
+      }
+
+      .cta-arrow {
+        font-size: 1.4em;
+        line-height: 1;
+      }
+
+      @keyframes productFloat {
+        0%,
+        100% {
+          transform: scale(1.15) translateY(0) rotate(0deg);
+        }
+        25% {
+          transform: scale(1.15) translateY(-10px) rotate(2deg);
+        }
+        75% {
+          transform: scale(1.15) translateY(10px) rotate(-2deg);
+        }
+      }
+
+      .features,
+      .testimonials,
+      .como-comprar {
+        width: 100%;
+        padding: 8rem 0;
+      }
+
+      .features {
+        position: relative;
+        overflow-x: hidden;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+          clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
+          z-index: 0;
+        }
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: var(--textureBg) center/cover;
+          opacity: 0.05;
+          mix-blend-mode: overlay;
+          clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
+          z-index: 0;
+          pointer-events: none;
+        }
+        .container {
+          position: relative;
+          z-index: 1;
+          text-align: center;
+        }
+      }
+
+      .features h2,
+      .testimonials h2,
+      .como-comprar h2,
+      .blog-section h2 {
+        color: #fff;
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+        gap: 3rem;
+        padding: 0 2rem;
+        max-width: 2400px;
+        margin: 0 auto;
+        justify-content: center;
+      }
+
+      .feature-card {
+        background: rgba(var(--primary-dark-rgb), 0.8);
+        padding: 2rem;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(var(--secondary-rgb), 0.2);
+        position: relative;
+        overflow: hidden;
+        min-height: 180px;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 1rem;
+      }
+
+      .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(var(--secondary-rgb), 0.1), transparent);
+        transform: translateX(-100%);
+        transition: 0.5s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .feature-card:hover::before {
+        transform: translateX(100%);
+      }
+
+      .feature-card h3 {
+        color: var(--secondary);
+        font-size: 1.5rem;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        line-height: 1.3;
+      }
+
+      .feature-card p {
+        margin: 0;
+        line-height: 1.6;
+        flex-grow: 1;
+      }
+
+      .testimonials {
+        background: var(--background);
+        position: relative;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background:
+            radial-gradient(circle at 20% 30%, rgba(var(--secondary-rgb), 0.1) 0%, transparent 70%),
+            radial-gradient(circle at 80% 70%, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
+        }
+      }
+
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+        gap: 2rem;
+        padding: 0 2rem;
+        max-width: 2400px;
+        margin: 0 auto;
+        justify-content: center;
+      }
+
+      .testimonial-card {
+        background: rgba(var(--primary-rgb), 0.3);
+        padding: 2rem;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(var(--secondary-rgb), 0.1);
+        font-style: italic;
+        position: relative;
+        overflow: hidden;
+        height: 140px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 100px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .testimonial-card::after {
+        content: '"';
+        position: absolute;
+        bottom: -20px;
+        right: 20px;
+        font-size: 8rem;
+        color: rgba(var(--secondary-rgb), 0.1);
+        font-family: serif;
+        pointer-events: none;
+      }
+
+      .testimonial-quote {
+        margin: 0 0 1.5rem 0;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        flex-grow: 1;
+      }
+
+      .testimonial-name {
+        color: var(--secondary);
+        margin-top: auto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 1.2rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        padding-top: 1rem;
+        border-top: 1px solid rgba(var(--secondary-rgb), 0.1);
+      }
+
+      .como-comprar {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-dark) 100%);
+        clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
+        position: relative;
+        overflow: hidden;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: var(--textureBg) center/cover;
+          opacity: 0.05;
+          mix-blend-mode: overlay;
+        }
+        &::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 80%;
+          height: 80%;
+          transform: translate(-50%, -50%);
+          background: radial-gradient(circle, rgba(255, 230, 0, 0.08) 0%, transparent 70%);
+          pointer-events: none;
+        }
+      }
+
+      .como-comprar .container {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .como-comprar-card {
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 3rem 2.5rem;
+        background: linear-gradient(145deg, rgba(var(--primary-dark-rgb), 0.7) 0%, rgba(var(--primary-rgb), 0.4) 100%);
+        border-radius: 24px;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 230, 0, 0.2);
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      }
+
+      .como-comprar-card:hover {
+        transform: translateY(-8px) scale(1.01);
+        box-shadow:
+          0 20px 48px rgba(0, 0, 0, 0.3),
+          0 0 0 1px rgba(255, 230, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 230, 0, 0.35);
+      }
+
+      .como-comprar-badges {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .como-comprar-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.4rem 0.9rem;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 50px;
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .como-comprar-badge-icon {
+        font-size: 1rem;
+        line-height: 1;
+      }
+
+      .como-comprar-text {
+        font-size: 1.3rem;
+        line-height: 1.6;
+        margin: 0;
+        color: #fff;
+        font-weight: 500;
+      }
+
+      .como-comprar-subtext {
+        font-size: 1.05rem;
+        line-height: 1.5;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.88);
+      }
+
+      .como-comprar-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 1rem 1.75rem;
+        background: #ffe600;
+        color: #333;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1rem;
+        border-radius: 12px;
+        transition: all 0.25s ease;
+        margin-top: 0.25rem;
+        box-shadow: 0 4px 16px rgba(255, 230, 0, 0.35);
+      }
+
+      .como-comprar-cta:hover {
+        background: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(255, 255, 255, 0.4);
+      }
+
+      .como-comprar-cta:hover .como-comprar-cta-arrow {
+        transform: translateX(4px);
+      }
+
+      .como-comprar-logo {
+        height: 32px;
+        width: auto;
+        object-fit: contain;
+      }
+
+      .como-comprar-cta-text {
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+
+      .como-comprar-cta-arrow {
+        font-size: 1.2em;
+        transition: transform 0.25s ease;
+      }
+
+      .blog-section {
+        padding: 8rem 0;
+        background: var(--background);
+        position: relative;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background:
+            radial-gradient(circle at 20% 30%, rgba(var(--secondary-rgb), 0.1) 0%, transparent 70%),
+            radial-gradient(circle at 80% 70%, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
+        }
+      }
+
+      .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+        gap: 2rem;
+        padding: 0 2rem;
+        max-width: 2400px;
+        margin: 0 auto;
+      }
+
+      .blog-card {
+        background: rgba(var(--primary-dark-rgb), 0.3);
+        border-radius: 20px;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(var(--secondary-rgb), 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border-color: rgba(var(--secondary-rgb), 0.3);
+      }
+
+      .blog-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .blog-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .blog-title {
+        color: var(--secondary);
+        font-size: 1.5rem;
+        margin: 0 0 1rem 0;
+        line-height: 1.2;
+      }
+
+      .blog-date {
+        color: rgba(var(--text), 0.7);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+
+      .blog-description {
+        color: var(--text);
+        margin: 0;
+        flex-grow: 1;
+      }
+
+      .blog-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        height: 100%;
+      }
+
+      footer {
+        background: var(--background);
+        padding: 6rem 2rem;
+        text-align: center;
+        position: relative;
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin: 2rem 0;
+        flex-wrap: wrap;
+      }
+
+      .social-links a {
+        color: var(--secondary);
+        text-decoration: none;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border: 1px solid rgba(var(--secondary-rgb), 0.3);
+        border-radius: 5px;
+        backdrop-filter: blur(5px);
+      }
+
+      .social-links a:hover {
+        background: rgba(var(--secondary-rgb), 0.1);
+        transform: translateY(-3px);
+      }
+
+      .footer-logo {
+        margin-bottom: 2rem;
+      }
+
+      .footer-logo a {
+        display: inline-block;
+      }
+
+      .footer-logo-img {
+        max-height: 80px;
+        width: auto;
+        object-fit: contain;
+      }
+
+      .disclaimer {
+        max-width: 1200px;
+        margin: 2rem auto;
+        font-size: 0.9rem;
+        opacity: 0.8;
+        line-height: 1.6;
+        padding: 2rem;
+        background: rgba(var(--primary-dark-rgb), 0.3);
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+      }
+
+      @media (max-width: 1024px) {
+        .features-grid,
+        .testimonials-grid {
+          grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+          padding: 0 1rem;
+        }
+
+        .hero-carousel-wrapper :global(.splide__slide) {
+          aspect-ratio: 16 / 9;
+        }
+
+        .slide-content {
+          padding: 3rem 4rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .slide-logo {
+          max-width: clamp(100px, 30vw, 140px);
+        }
+
+        .container {
+          padding: 0 1rem;
+        }
+
+        .hero-carousel-wrapper :global(.splide__slide) {
+          aspect-ratio: 9 / 14;
+        }
+
+        .slide-content {
+          padding: 2rem;
+          max-width: 100%;
+          align-items: center;
+        }
+
+        .features,
+        .testimonials,
+        .como-comprar {
+          padding: 4rem 0;
+        }
+
+        .como-comprar-card {
+          padding: 2rem 1.5rem;
+        }
+
+        .como-comprar-badges {
+          gap: 0.6rem;
+        }
+
+        .como-comprar-badge {
+          font-size: 0.8rem;
+          padding: 0.35rem 0.7rem;
+        }
+
+        .como-comprar-text {
+          font-size: 1.1rem;
+        }
+
+        .features-grid,
+        .testimonials-grid {
+          grid-template-columns: 1fr;
+          padding: 0 1rem;
+        }
+
+        section h2 {
+          font-size: 2rem;
+          margin-bottom: 2rem;
+        }
+
+        .blog-grid {
+          grid-template-columns: 1fr;
+          padding: 0 1rem;
+        }
+      }
+
+      @media (min-width: 2000px) {
+        .features-grid,
+        .testimonials-grid {
+          max-width: 2400px;
+          grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class='portal-bg'></div>
+    <main>
+      <section class='hero'>
+        <div class='hero-carousel-wrapper'>
+          <div class='splide' id='hero-slider' aria-label='Galería de productos CSS Store'>
+            <div class='splide__track'>
+              <ul class='splide__list'>
+                {
+                  sliderImages.map((img, i) => {
+                    const slide = product.heroSlides[i] || product.heroSlides[0];
+                    return (
+                      <li class='splide__slide'>
+                        <img
+                          src={img.src}
+                          width={img.width}
+                          height={img.height}
+                          alt={`CSS Store - ${slide.title}`}
+                          class='slide-bg'
+                        />
+                        <div class='slide-overlay' />
+                        <img
+                          src={logoMain.src}
+                          alt='CSS Store'
+                          class='slide-logo'
+                          width={logoMain.width}
+                          height={logoMain.height}
+                        />
+                        <div class='slide-content'>
+                          <span class='slide-subtitle'>{slide.subtitle}</span>
+                          <h2 class='slide-title'>{slide.title}</h2>
+                          <a href={slide.linkUrl} class='slide-cta'>
+                            {slide.linkText} <span class='cta-arrow'>›</span>
+                          </a>
+                        </div>
+                      </li>
+                    );
+                  })
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class='blog-section'>
+        <div class='container'>
+          <h2>Colecciones Destacadas</h2>
+          <div class='blog-grid'>
+            {
+              posts.map((post) => (
+                <a href={`/blog/${post.id}/`} class='blog-link'>
+                  <article class='blog-card'>
+                    <img src={post.data.heroImage} alt='' class='blog-image' />
+                    <div class='blog-content'>
+                      <h3 class='blog-title'>{post.data.title}</h3>
+                      <div class='blog-date'>
+                        <FormattedDate date={post.data.pubDate} />
+                      </div>
+                      <p class='blog-description'>{post.data.description}</p>
+                    </div>
+                  </article>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class='features'>
+        <div class='container'>
+          <h2>Nuestros Atributos</h2>
+          <div class='features-grid'>
+            {
+              product.features.map((feature) => (
+                <div class='feature-card'>
+                  <h3>{feature.title}</h3>
+                  <p>{feature.description}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+			
+      <section class='como-comprar'>
+        <div class='container'>
+          <h2>Cómo Comprar</h2>
+          <div class='como-comprar-card'>
+            <div class='como-comprar-badges'>
+              <span class='como-comprar-badge'><span class='como-comprar-badge-icon'>✓</span> Pago protegido</span>
+              <span class='como-comprar-badge'><span class='como-comprar-badge-icon'>✓</span> Envío seguro</span>
+              <span class='como-comprar-badge'><span class='como-comprar-badge-icon'>✓</span> Compra con confianza</span>
+            </div>
+            <p class='como-comprar-text'>Usamos MercadoLibre para tu mayor tranquilidad y comodidad.</p>
+            <p class='como-comprar-subtext'>Visita nuestra tienda oficial en MercadoLibre para hacer tu pedido hoy.</p>
+            <a href={product.mercadolibreUrl} target='_blank' rel='noopener noreferrer' class='como-comprar-cta'>
+              <img src={mercadolibreLogo.src} alt='MercadoLibre' class='como-comprar-logo' width={mercadolibreLogo.width} height={mercadolibreLogo.height} />
+              <span class='como-comprar-cta-text'>Ir a la tienda</span>
+              <span class='como-comprar-cta-arrow'>→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class='testimonials'>
+        <div class='container'>
+          <h2>Lo Que Dicen Nuestros Clientes</h2>
+          <div class='testimonials-grid'>
+            {
+              product.testimonials.map((testimonial) => (
+                <div class='testimonial-card'>
+                  <p class='testimonial-quote'>"{testimonial.quote}"</p>
+                  <div class='testimonial-name'>- {testimonial.name}</div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <InstagramFeed />
+
+      <footer>
+        <div class='container'>
+          <div class='footer-logo'>
+            <a href='/'>
+              <img
+                src={logoFooter.src}
+                alt='CSS Store Uruguay'
+                class='footer-logo-img'
+                width={logoFooter.width}
+                height={logoFooter.height}
+              />
+            </a>
+          </div>
+          <div class='social-links'>
+            {
+              product.footer.socialLinks.map((link) => (
+                <a href={link.url} target='_blank' rel='noopener noreferrer'>
+                  {link.platform}
+                </a>
+              ))
+            }
+          </div>
+          <p class='disclaimer'>{product.footer.legalDisclaimer}</p>
+          <p>Contacto: <a href={`mailto:${product.footer.contactEmail}`}>{product.footer.contactEmail}</a></p>
+        </div>
+      </footer>
+    </main>
+    <script>
+      import Splide from '@splidejs/splide';
+      import '@splidejs/splide/css/core';
+
+      document.addEventListener('DOMContentLoaded', () => {
+        new Splide('#hero-slider', {
+          type: 'fade',
+          rewind: true,
+          autoplay: true,
+          interval: 5000,
+          speed: 1000,
+          pauseOnHover: false,
+          arrows: false,
+          pagination: false,
+          drag: true,
+          width: '100%',
+        }).mount();
+      });
+    </script>
+  </body>
 </html>
