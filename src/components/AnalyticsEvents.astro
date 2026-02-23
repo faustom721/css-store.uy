@@ -7,6 +7,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Store / MercadoLibre CTA (GA4 recommended: generate_lead)
+  document.querySelectorAll('.como-comprar-cta').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      trackEvent('generate_lead', {
+        event_category: 'engagement',
+        event_label: 'ir_a_la_tienda',
+        link_url: btn.href
+      });
+    });
+  });
+
   // CTA button clicks
   document.querySelectorAll('.cta-button').forEach(function(btn) {
     btn.addEventListener('click', function() {
