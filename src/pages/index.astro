@@ -39,6 +39,9 @@ const hdImages = {
 			portalBg2: `url(${hdImages.portal2})`,
 			textureBg: `url(${hdImages.texture})`
 		}}>
+			html {
+				overflow-x: hidden;
+			}
 			body {
 				margin: 0;
 				font-family: 'Atkinson', sans-serif;
@@ -55,7 +58,6 @@ const hdImages = {
 			}
 
 			.container {
-				width: 100%;
 				max-width: 2400px;
 				margin: 0 auto;
 				padding: 0 2rem;
@@ -116,7 +118,7 @@ const hdImages = {
 
 		.slide-overlay {
 			position: absolute;
-			inset: -20px;
+			inset: 0;
 			background: linear-gradient(
 				to right,
 				rgba(0, 0, 0, 0.8) 0%,
@@ -226,10 +228,20 @@ const hdImages = {
 			}
 
 			.features {
-				background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-				clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
 				position: relative;
+				overflow-x: hidden;
 				&::before {
+					content: '';
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+					clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
+					z-index: 0;
+				}
+				&::after {
 					content: '';
 					position: absolute;
 					top: 0;
@@ -239,16 +251,28 @@ const hdImages = {
 					background: var(--textureBg) center/cover;
 					opacity: 0.05;
 					mix-blend-mode: overlay;
+					clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
+					z-index: 0;
+					pointer-events: none;
+				}
+				.container {
+					position: relative;
+					z-index: 1;
+					text-align: center;
+				}
+				h2 {
+					color: #fff;
 				}
 			}
 
 			.features-grid {
 				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+				grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
 				gap: 3rem;
 				padding: 0 2rem;
 				max-width: 2400px;
 				margin: 0 auto;
+				justify-content: center;
 			}
 
 			.feature-card {
@@ -261,6 +285,7 @@ const hdImages = {
 				position: relative;
 				overflow: hidden;
 				min-height: 250px;
+				min-width: 0;
 				display: flex;
 				flex-direction: column;
 				justify-content: flex-start;
@@ -320,11 +345,12 @@ const hdImages = {
 
 			.testimonials-grid {
 				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
 				gap: 2rem;
 				padding: 0 2rem;
 				max-width: 2400px;
 				margin: 0 auto;
+				justify-content: center;
 			}
 
 			.testimonial-card {
@@ -396,6 +422,16 @@ const hdImages = {
 				}
 			}
 
+			.specs-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+				gap: 2rem;
+				padding: 0 2rem;
+				max-width: 2400px;
+				margin: 0 auto;
+				justify-content: center;
+			}
+
 			.spec-item {
 				text-align: center;
 				padding: 2rem;
@@ -447,7 +483,7 @@ const hdImages = {
 
 			.blog-grid {
 				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
 				gap: 2rem;
 				padding: 0 2rem;
 				max-width: 2400px;
@@ -570,7 +606,7 @@ const hdImages = {
 
 		@media (max-width: 1024px) {
 			.features-grid, .testimonials-grid, .specs-grid {
-				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
 				padding: 0 1rem;
 			}
 
@@ -599,6 +635,7 @@ const hdImages = {
 			.slide-content {
 				padding: 2rem;
 				max-width: 100%;
+				align-items: center;
 			}
 
 			.features, .testimonials, .specs {
@@ -607,6 +644,7 @@ const hdImages = {
 
 			.features-grid, .testimonials-grid, .specs-grid {
 				grid-template-columns: 1fr;
+				padding: 0 1rem;
 			}
 
 			section h2 {
