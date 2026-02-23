@@ -28,7 +28,7 @@
       },
       {
         "title": "Envío Gratis",
-        "subtitle": "En pedidos a Montevideo. Envíos a todo el país",
+        "subtitle": "A todo el país en compras de $1200",
         "linkText": "Comprar Ahora",
         "linkUrl": "/shop/coleccion"
       }
@@ -76,13 +76,14 @@
     ],
     "mercadolibreUrl": "https://www.mercadolibre.com.uy/pagina/css-store",
     "footer": {
-      "legalDisclaimer": "Si tienes alguna duda no dudes en contactarnos a través de Instagram o WhatsApp.",
+      "legalDisclaimer": "Si tienes algún inconveniente no dudes en contactarnos.",
       "socialLinks": [
         { "platform": "Instagram", "url": "https://www.instagram.com/css_store_uy/" },
-        { "platform": "Twitter", "url": "https://twitter.com/temaprint" },
-        { "platform": "Facebook", "url": "https://facebook.com/temaprint" }
+        { "platform": "MercadoLibre", "url": "https://www.mercadolibre.com.uy/pagina/css-store" },
+        { "platform": "WhatsApp", "url": "https://wa.me/59891277080" },
+        { "platform": "Email", "url": "mailto:hola@css-store.uy" }
       ],
-      "contactEmail": "netemtem@gmail.com"
+      "contactEmail": "hola@css-store.uy"
     }
   },
   "seo": {

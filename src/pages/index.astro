@@ -657,10 +657,11 @@ const hdImages = {
         border: 1px solid rgba(var(--secondary-rgb), 0.3);
         border-radius: 5px;
         backdrop-filter: blur(5px);
+        background: rgba(var(--primary-dark-rgb), 0.6);
       }
 
       .social-links a:hover {
-        background: rgba(var(--secondary-rgb), 0.1);
+        background: rgba(var(--primary-dark-rgb), 0.8);
         transform: translateY(-3px);
       }
 
@@ -819,7 +820,7 @@ const hdImages = {
         </div>
       </section>
 
-      <section class='blog-section'>
+      <!-- <section class='blog-section'>
         <div class='container'>
           <h2>Colecciones Destacadas</h2>
           <div class='blog-grid'>
@@ -841,7 +842,7 @@ const hdImages = {
             }
           </div>
         </div>
-      </section>
+      </section> -->
 
       <section class='features'>
         <div class='container'>
@@ -864,7 +865,7 @@ const hdImages = {
         <div class='container'>
           <h2>Cómo Comprar</h2>
           <div class='como-comprar-card'>
-            <p class='como-comprar-text'>Usamos MercadoLibre para tu mayor tranquilidad y comodidad.</p>
+            <p class='como-comprar-text'>Usamos MercadoLibre para tu mayor tranquilidad y comodidad</p>
             <a href={product.mercadolibreUrl} target='_blank' rel='noopener noreferrer' class='como-comprar-cta'>
               <span class='como-comprar-cta-row'>
                 <span class='como-comprar-cta-text'>Ir a la tienda</span>
@@ -872,7 +873,7 @@ const hdImages = {
               <img src={mercadolibreLogo.src} alt='MercadoLibre' class='como-comprar-logo' width={mercadolibreLogo.width} height={mercadolibreLogo.height} />
             </a>
 						<br />
-						<p class='como-comprar-subtext'>Visita nuestra tienda oficial en MercadoLibre para hacer tu pedido hoy.</p>
+						<p class='como-comprar-subtext'>¡Visita nuestra tienda oficial en MercadoLibre para hacer tu pedido hoy!</p>
 						<div class='como-comprar-badges'>
               <span class='como-comprar-badge'><span class='como-comprar-badge-icon'>✓</span> Pago protegido</span>
 							<span class='como-comprar-badge'><span class='como-comprar-badge-icon'>✓</span> Cuotas sin interés</span>
@@ -924,7 +925,6 @@ const hdImages = {
             }
           </div>
           <p class='disclaimer'>{product.footer.legalDisclaimer}</p>
-          <p>Contacto: <a href={`mailto:${product.footer.contactEmail}`}>{product.footer.contactEmail}</a></p>
         </div>
       </footer>
     </main>

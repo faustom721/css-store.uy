@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
       var url = link.href || '';
       var platform = 'unknown';
       if (url.includes('instagram')) platform = 'instagram';
-      else if (url.includes('twitter') || url.includes('x.com')) platform = 'twitter';
-      else if (url.includes('github')) platform = 'github';
-      else if (url.includes('mastodon')) platform = 'mastodon';
+      else if (url.includes('mercadolibre')) platform = 'mercadolibre';
+      else if (url.includes('wa.me') || url.includes('whatsapp')) platform = 'whatsapp';
+      else if (url.startsWith('mailto:')) platform = 'email';
 
       trackEvent('social_click', {
         event_category: 'social',
