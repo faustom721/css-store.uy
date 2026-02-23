@@ -198,23 +198,6 @@ const hdImages = {
 			line-height: 1;
 		}
 
-		.hero-carousel-wrapper :global(.splide__pagination) {
-			bottom: 1.5rem;
-			gap: 0.5rem;
-		}
-
-		.hero-carousel-wrapper :global(.splide__pagination__page) {
-			background: rgba(255, 255, 255, 0.4);
-			width: 10px;
-			height: 10px;
-			border: none;
-			transition: background 0.3s ease, transform 0.3s ease;
-		}
-
-		.hero-carousel-wrapper :global(.splide__pagination__page.is-active) {
-			background: var(--secondary);
-			transform: scale(1.3);
-		}
 
 		@keyframes productFloat {
 			0%, 100% { transform: scale(1.15) translateY(0) rotate(0deg); }
@@ -805,7 +788,7 @@ const hdImages = {
 				speed: 1000,
 				pauseOnHover: false,
 				arrows: false,
-				pagination: true,
+				pagination: false,
 				drag: true,
 				width: '100%',
 			}).mount();
