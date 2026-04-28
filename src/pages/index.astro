@@ -18,7 +18,7 @@ const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueO
 
 const featuredProducts = (await getCollection('products', (p) => p.data.featured))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 8);
+	.slice(0, 5);
 
 // Slider images from assets
 const sliderImageImports = import.meta.glob<{ default: ImageMetadata }>('../assets/images/slider/*.*', { eager: true });
@@ -223,9 +223,74 @@ const hdImages = {
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       }
 
-      .destacados .features-grid {
-        max-width: 2400px;
-        margin: 0 auto;
+      .destacados-slider {
+        width: 100vw;
+        max-width: none;
+        margin-left: calc(50% - 50vw);
+        padding: 0 2rem;
+      }
+
+      .destacados-slider :global(.splide__slide) {
+        padding: 0.35rem;
+      }
+
+      .destacados-slider :global(.splide__arrows) {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .destacados-slider :global(.splide__arrow) {
+        width: 2.75rem;
+        height: 2.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(20, 20, 20, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        opacity: 0.95;
+        pointer-events: auto;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+        transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+      }
+
+      .destacados-slider :global(.splide__arrow svg) {
+        fill: #fff;
+        width: 0.9rem;
+        height: 0.9rem;
+      }
+
+      .destacados-slider :global(.splide__arrow:hover) {
+        background: rgba(20, 20, 20, 0.9);
+        border-color: rgba(var(--secondary-rgb), 0.6);
+        opacity: 1;
+      }
+
+      .destacados-slider :global(.splide__arrow--prev) {
+        left: 0.9rem;
+      }
+
+      .destacados-slider :global(.splide__arrow--next) {
+        right: 0.9rem;
+      }
+
+      .destacados-slider :global(.splide__pagination) {
+        bottom: -1.2rem;
+      }
+
+      .destacados-slider :global(.splide__pagination__page) {
+        background: rgba(255, 255, 255, 0.45);
+        width: 0.45rem;
+        height: 0.45rem;
+        margin: 0 0.18rem;
+      }
+
+      .destacados-slider :global(.splide__pagination__page.is-active) {
+        background: var(--secondary);
+        transform: scale(1.18);
+      }
+
+      .destacados-slider :global(.splide__track) {
+        padding-block: 0.75rem;
       }
 
       .destacado-image {
@@ -233,7 +298,7 @@ const hdImages = {
         aspect-ratio: 1;
         object-fit: cover;
         display: block;
-        border-radius: 12px 12px 0 0;
+        border-radius: 12px;
       }
 
       .destacado-cta {
@@ -744,6 +809,10 @@ const hdImages = {
           padding: 0 1rem;
         }
 
+        .destacados-slider {
+          padding: 0 1rem;
+        }
+
         .hero-carousel-wrapper :global(.splide__slide) {
           aspect-ratio: 16 / 9;
         }
@@ -799,6 +868,31 @@ const hdImages = {
         .testimonials-grid {
           grid-template-columns: 1fr;
           padding: 0 1rem;
+        }
+
+        .destacados-slider {
+          padding: 0;
+        }
+
+        .destacados-slider :global(.splide__slide) {
+          padding: 0.15rem;
+        }
+
+        .destacados-slider .feature-card {
+          padding: 1.35rem;
+        }
+
+        .destacados-slider :global(.splide__arrow) {
+          width: 2.35rem;
+          height: 2.35rem;
+        }
+
+        .destacados-slider :global(.splide__arrow--prev) {
+          left: 0.55rem;
+        }
+
+        .destacados-slider :global(.splide__arrow--next) {
+          right: 0.55rem;
         }
 
         section h2 {
@@ -894,30 +988,36 @@ const hdImages = {
         <section class='destacados'>
           <div class='container'>
             <h2>Destacados</h2>
-            <div class='features-grid'>
-              {featuredProducts.map((p) => {
-                const img0 = p.data.images[0]!;
-                return (
-                  <div class='feature-card'>
-                    <a href={`/shop/${p.data.slug}/`}>
-                      <Image
-                        class='destacado-image'
-                        src={img0}
-                        alt={p.data.title}
-                        widths={[300, 500, 800]}
-                        sizes="(max-width: 768px) 100vw, 25vw"
-                      />
-                    </a>
-                    <h3>
-                      <a href={`/shop/${p.data.slug}/`} style='color: inherit; text-decoration: none;'>
-                        {p.data.title}
-                      </a>
-                    </h3>
-                    <p>{p.data.shortDescription}</p>
-                    <a class='destacado-cta' href={p.data.mercadolibre_link} rel='nofollow noopener' target='_blank' data-ml-cta>Ver en MercadoLibre</a>
-                  </div>
-                );
-              })}
+            <div class='splide destacados-slider' id='destacados-slider' aria-label='Productos destacados'>
+              <div class='splide__track'>
+                <ul class='splide__list'>
+                  {featuredProducts.map((p) => {
+                    const img0 = p.data.images[0]!;
+                    return (
+                      <li class='splide__slide'>
+                        <div class='feature-card'>
+                          <a href={`/shop/${p.data.slug}/`}>
+                            <Image
+                              class='destacado-image'
+                              src={img0}
+                              alt={p.data.title}
+                              widths={[300, 500, 800]}
+                              sizes='(max-width: 768px) 70vw, (max-width: 1200px) 40vw, 20vw'
+                            />
+                          </a>
+                          <h3>
+                            <a href={`/shop/${p.data.slug}/`} style='color: inherit; text-decoration: none;'>
+                              {p.data.title}
+                            </a>
+                          </h3>
+                          <p>{p.data.shortDescription}</p>
+                          <a class='destacado-cta' href={p.data.mercadolibre_link} rel='nofollow noopener' target='_blank' data-ml-cta>Ver en MercadoLibre</a>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
           </div>
         </section>
@@ -1009,7 +1109,7 @@ const hdImages = {
     </main>
     <script>
       import Splide from '@splidejs/splide';
-      import '@splidejs/splide/css/core';
+      import '@splidejs/splide/css';
 
       document.addEventListener('DOMContentLoaded', () => {
         new Splide('#hero-slider', {
@@ -1023,6 +1123,27 @@ const hdImages = {
           pagination: false,
           drag: true,
           width: '100%',
+        }).mount();
+
+        new Splide('#destacados-slider', {
+          type: 'slide',
+          perPage: 5,
+          perMove: 1,
+          gap: '1rem',
+          pagination: false,
+          arrows: true,
+          drag: true,
+          breakpoints: {
+            1200: {
+              perPage: 3,
+            },
+            768: {
+              perPage: 1,
+              padding: { left: '1rem', right: '1rem' },
+              arrows: false,
+              pagination: true,
+            },
+          },
         }).mount();
       });
     </script>
