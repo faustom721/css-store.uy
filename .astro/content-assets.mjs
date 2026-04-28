@@ -1,1 +1,8 @@
-export default new Map();
+
+import __ASTRO_IMAGE_IMPORT_1BYGIk from "../../assets/images/slider/lifestyle-shot-2b9ad41c-f55f-4e3b-80e5-bd1e93e3e3ae.jpeg?astroContentImageFlag=&importer=src%2Fcontent%2Fproducts%2Fmedias-bob-calamarino.md";
+import __ASTRO_IMAGE_IMPORT_eqwwu from "../../assets/images/slider/2.jpg?astroContentImageFlag=&importer=src%2Fcontent%2Fproducts%2Fmedias-bob-patricio.md";
+import __ASTRO_IMAGE_IMPORT_Z2qloM1 from "../../assets/images/slider/6.png?astroContentImageFlag=&importer=src%2Fcontent%2Fproducts%2Fmedias-bob-patricio.md";
+import __ASTRO_IMAGE_IMPORT_j4aOx from "../../assets/images/slider/2.jpg?astroContentImageFlag=&importer=src%2Fcontent%2Fproducts%2Fremera-verano-classic.md";
+import __ASTRO_IMAGE_IMPORT_1NR6eA from "../../assets/images/slider/lifestyle-shot-a96e201e-492f-4006-b190-cb576e26d4a7.jpeg?astroContentImageFlag=&importer=src%2Fcontent%2Fproducts%2Fshort-verano-arena.md";
+export default new Map([["../../assets/images/slider/lifestyle-shot-2b9ad41c-f55f-4e3b-80e5-bd1e93e3e3ae.jpeg?astroContentImageFlag=&importer=src%2Fcontent%2Fproducts%2Fmedias-bob-calamarino.md", __ASTRO_IMAGE_IMPORT_1BYGIk], ["../../assets/images/slider/2.jpg?astroContentImageFlag=&importer=src%2Fcontent%2Fproducts%2Fmedias-bob-patricio.md", __ASTRO_IMAGE_IMPORT_eqwwu], ["../../assets/images/slider/6.png?astroContentImageFlag=&importer=src%2Fcontent%2Fproducts%2Fmedias-bob-patricio.md", __ASTRO_IMAGE_IMPORT_Z2qloM1], ["../../assets/images/slider/2.jpg?astroContentImageFlag=&importer=src%2Fcontent%2Fproducts%2Fremera-verano-classic.md", __ASTRO_IMAGE_IMPORT_j4aOx], ["../../assets/images/slider/lifestyle-shot-a96e201e-492f-4006-b190-cb576e26d4a7.jpeg?astroContentImageFlag=&importer=src%2Fcontent%2Fproducts%2Fshort-verano-arena.md", __ASTRO_IMAGE_IMPORT_1NR6eA]]);
+		

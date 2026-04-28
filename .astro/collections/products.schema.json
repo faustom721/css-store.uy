@@ -1,0 +1,114 @@
+{
+  "$ref": "#/definitions/products",
+  "definitions": {
+    "products": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "maxItems": 10
+        },
+        "mercadolibre_link": {
+          "type": "string",
+          "format": "uri"
+        },
+        "price": {
+          "type": "number",
+          "minimum": 0
+        },
+        "salePrice": {
+          "type": "number",
+          "minimum": 0
+        },
+        "availability": {
+          "type": "string",
+          "enum": [
+            "in stock",
+            "out of stock",
+            "available for order"
+          ]
+        },
+        "condition": {
+          "type": "string",
+          "enum": [
+            "new",
+            "refurbished",
+            "used"
+          ],
+          "default": "new"
+        },
+        "brand": {
+          "type": "string",
+          "default": "CSS Store"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Medias",
+            "Shorts",
+            "Remeras",
+            "Buzos",
+            "Accesorios"
+          ]
+        },
+        "collection": {
+          "type": "string"
+        },
+        "featured": {
+          "type": "boolean",
+          "default": false
+        },
+        "pubDate": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "googleProductCategory": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "slug",
+        "shortDescription",
+        "images",
+        "mercadolibre_link",
+        "price",
+        "availability",
+        "category",
+        "collection",
+        "pubDate"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

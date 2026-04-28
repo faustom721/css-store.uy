@@ -1,0 +1,88 @@
+# Decap CMS — productos, colecciones, ajustes. Backend GitHub; OAuth vía /api (Cloudflare Pages Functions).
+# Local: `npm run dev` y en otra terminal `npm run cms:local` (con local_backend abajo en dev).
+
+local_backend: true
+
+backend:
+  name: github
+  repo: faustom721/css-store.uy
+  branch: main
+  base_url: https://css-store.uy
+  auth_endpoint: /api/auth
+
+media_folder: src/assets/images/products
+# Sin “/” inicial: las rutas en frontmatter encajan con image() de Astro
+public_folder: src/assets/images/products
+
+editor:
+  preview: false
+
+collections:
+  - name: productCollections
+    label: Colecciones
+    label_singular: Colección
+    folder: src/content/collections
+    create: true
+    slug: "{{fields.slug}}"
+    format: frontmatter
+    extension: md
+    fields:
+      - { name: title, label: Título, widget: string, required: true }
+      - { name: slug, label: Slug, widget: string, required: true, pattern: ['^[a-z0-9-]+$', 'Solo letras minúsculas, números y guión'] }
+      - { name: description, label: Descripción, widget: text, required: true }
+      - { name: order, label: Orden, widget: number, default: 0, value_type: int, min: 0, max: 9999 }
+      - { name: heroImage, label: "Imagen hero (opcional)", widget: image, required: false }
+
+  - name: products
+    label: Productos
+    label_singular: Producto
+    folder: src/content/products
+    create: true
+    slug: "{{fields.slug}}"
+    format: frontmatter
+    extension: md
+    fields:
+      - { name: title, label: Título, widget: string, required: true }
+      - { name: slug, label: Slug, widget: string, required: true, pattern: ['^[a-z0-9-]+$', 'Solo letras minúsculas, números y guión'] }
+      - { name: shortDescription, label: Resumen, widget: text, required: true, hint: "Corto; también para feeds y meta" }
+      - { name: images, label: Imágenes, widget: list, max: 10, min: 1, field: { label: Imagen, name: image, widget: image } }
+      - { name: mercadolibre_link, label: URL MercadoLibre, widget: string, required: true }
+      - { name: price, label: Precio (número), widget: number, value_type: float, min: 0, required: true, hint: "Pesos UYU" }
+      - { name: salePrice, label: "Precio oferta (opcional)", widget: number, value_type: float, min: 0, required: false }
+      - { name: availability, label: Disponibilidad, widget: select, default: in stock, options: [in stock, 'out of stock', 'available for order'] }
+      - { name: condition, label: Condición, widget: select, default: new, options: [new, refurbished, used] }
+      - { name: brand, label: Marca, widget: string, default: "CSS Store" }
+      - { name: category, label: Categoría, widget: select, default: Medias, options: [Medias, Shorts, Remeras, Buzos, Accesorios] }
+      - {
+          name: collection,
+          label: Colección (slug),
+          widget: "relation",
+          collection: productCollections,
+          searchFields: [title, slug],
+          valueField: slug,
+          displayField: title,
+          required: true
+        }
+      - { name: featured, label: "Destacado (home)", widget: boolean, default: false }
+      - { name: pubDate, label: Fecha, widget: datetime, date_format: YYYY-MM-DD, time_format: false, picker_utc: false, default: }
+      - { name: googleProductCategory, label: "Categoría Google (opcional)", widget: string, required: false }
+      - { name: body, label: Descripción larga, widget: markdown }
+
+  - name: siteSettings
+    label: Ajustes del sitio
+    files:
+      - name: site
+        label: Feed y moneda
+        file: src/content/data/siteSettings.json
+        format: json
+        fields:
+          - name: site
+            label: Parámetros
+            widget: object
+            fields:
+              - { name: currency, label: Moneda (ISO), widget: string, default: "UYU" }
+              - { name: defaultBrand, label: Marca por defecto, widget: string, default: "CSS Store" }
+              - { name: defaultCountry, label: "País (ISO)", widget: string, default: "UY" }
+              - { name: defaultGoogleProductCategory, label: Categoría Google por defecto, widget: string }
+              - { name: feedBuildTitle, label: Título en feeds XML, widget: string, required: false }
+              - { name: feedBuildDescription, label: Descripción en feeds XML, widget: string, required: false }

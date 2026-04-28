@@ -1,0 +1,42 @@
+{
+  "$ref": "#/definitions/siteSettings",
+  "definitions": {
+    "siteSettings": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string",
+            "default": "UYU"
+          },
+          "defaultBrand": {
+            "type": "string",
+            "default": "CSS Store"
+          },
+          "defaultCountry": {
+            "type": "string",
+            "default": "UY"
+          },
+          "defaultGoogleProductCategory": {
+            "type": "string",
+            "default": "Apparel & Accessories > Clothing > Underwear & Socks > Socks"
+          },
+          "feedBuildTitle": {
+            "type": "string"
+          },
+          "feedBuildDescription": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

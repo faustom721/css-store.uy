@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
+    "dev": "concurrently \"astro dev\" \"decap-server\"",
+    "cms:local": "decap-server",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -15,5 +16,9 @@
     "@astrojs/sitemap": "^3.2.1",
     "@splidejs/splide": "^4.1.4",
     "astro": "^5.2.5"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "decap-server": "^3.7.0"
   }
 }

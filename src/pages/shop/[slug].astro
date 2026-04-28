@@ -1,0 +1,356 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_URL, SITE_TITLE } from '../../consts';
+import { priceValidUntilEoy, schemaAvailability } from '../../lib/schema';
+
+export async function getStaticPaths() {
+	const products = await getCollection('products');
+	return products.map((p) => ({ params: { slug: p.data.slug } }));
+}
+
+const { slug } = Astro.params;
+if (!slug) {
+	return Astro.redirect('/shop/');
+}
+const all = await getCollection('products');
+const entry = all.find((e) => e.data.slug === slug);
+if (!entry) {
+	return Astro.redirect('/shop/');
+}
+
+const pcols = await getCollection('productCollections');
+const col = pcols.find((c) => c.data.slug === entry.data.collection);
+const colLabel = col?.data.title ?? entry.data.collection;
+
+const d = entry.data;
+const origin = (Astro.site && Astro.site.href) || `${SITE_URL}/`;
+const productUrl = new URL(`/shop/${d.slug}/`, origin).toString();
+const firstImg = d.images[0]!;
+
+const og = await getImage({ src: firstImg, width: 1200, quality: 85, format: 'jpg' });
+const ogUrl = new URL(og.src, origin).toString();
+const yearEnd = priceValidUntilEoy();
+const { Content } = await render(entry);
+
+const productJsonLd: Record<string, unknown> = {
+	'@context': 'https://schema.org',
+	'@type': 'Product',
+	name: d.title,
+	image: await Promise.all(
+		d.images.map(async (im) => {
+			const o = await getImage({ src: im, width: 1200, quality: 85, format: 'jpg' });
+			return new URL(o.src, origin).toString();
+		}),
+	),
+	description: d.shortDescription,
+	sku: d.slug,
+	brand: { '@type': 'Brand', name: d.brand },
+	offers: {
+		'@type': 'Offer',
+		price: String(d.salePrice ?? d.price),
+		priceCurrency: 'UYU',
+		priceValidUntil: yearEnd,
+		availability: schemaAvailability(d.availability),
+		itemCondition: 'https://schema.org/NewCondition',
+		url: productUrl,
+	},
+};
+
+const breadcrumb: Record<string, unknown> = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{ '@type': 'ListItem', position: 1, name: 'Inicio', item: origin },
+		{ '@type': 'ListItem', position: 2, name: 'Tienda', item: new URL('/shop/', origin).toString() },
+		{
+			'@type': 'ListItem',
+			position: 3,
+			name: d.title,
+			item: productUrl,
+		},
+	],
+};
+
+const pageTitle = `${d.title} | ${SITE_TITLE}`;
+
+const hdImages = {
+	texture: 'https://images.unsplash.com/photo-1579546929662-711aa81148cf?w=2048&q=95',
+};
+
+const hasMultiple = d.images.length > 1;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<BaseHead
+			title={pageTitle}
+			description={d.shortDescription}
+			image={ogUrl}
+			ogType="product"
+			ogImageType="image/jpeg"
+			extraJsonLd={[productJsonLd, breadcrumb]}
+			includeStoreJsonLd={false}
+		/>
+		<style
+			define:vars={{
+				textureBg: `url(${hdImages.texture})`,
+			}}
+		>
+			body {
+				margin: 0;
+				font-family: 'Atkinson', sans-serif;
+				background: var(--background);
+				color: var(--text);
+			}
+			.portal-bg {
+				position: fixed;
+				inset: 0;
+				background: var(--background);
+				z-index: -1;
+			}
+			.portal-bg::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--textureBg) center/cover;
+				opacity: 0.04;
+			}
+			.pdp {
+				max-width: 1000px;
+				margin: 0 auto;
+				padding: 3rem 1rem 5.5rem;
+			}
+			h1 {
+				color: var(--secondary);
+				font-size: clamp(1.55rem, 4vw, 2.2rem);
+				margin: 0 0 0.5rem;
+				line-height: 1.2;
+			}
+			.pdp-meta {
+				margin-bottom: 1rem;
+				opacity: 0.9;
+			}
+			.pdp-gallery,
+			.pdp-single {
+				margin-bottom: 1rem;
+				border-radius: 16px;
+				overflow: hidden;
+				padding-inline: 0.4rem;
+			}
+			.pdp-gallery :global(.splide__slide img) {
+				width: 100%;
+				max-height: 68vh;
+				object-fit: contain;
+				background: rgba(0, 0, 0, 0.22);
+				border-radius: 14px;
+			}
+			.pdp-single :global(img) {
+				width: 100%;
+				display: block;
+				border-radius: 14px;
+			}
+			.pdp-gallery :global(.splide__arrows) {
+				position: absolute;
+				inset: 0;
+				pointer-events: none;
+			}
+			.pdp-gallery :global(.splide__arrow) {
+				width: 2.75rem;
+				height: 2.75rem;
+				top: 50%;
+				transform: translateY(-50%);
+				background: rgba(20, 20, 20, 0.72);
+				border: 1px solid rgba(255, 255, 255, 0.28);
+				opacity: 0.95;
+				pointer-events: auto;
+				box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+				transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+			}
+			.pdp-gallery :global(.splide__arrow svg) {
+				fill: #fff;
+				width: 0.9rem;
+				height: 0.9rem;
+			}
+			.pdp-gallery :global(.splide__arrow:hover) {
+				background: rgba(20, 20, 20, 0.9);
+				border-color: rgba(var(--secondary-rgb), 0.6);
+				opacity: 1;
+			}
+			.pdp-gallery :global(.splide__arrow--prev) {
+				left: 0.9rem;
+			}
+			.pdp-gallery :global(.splide__arrow--next) {
+				right: 0.9rem;
+			}
+			.pdp-gallery :global(.splide__pagination) {
+				bottom: 0.45rem;
+			}
+			.pdp-gallery :global(.splide__pagination__page) {
+				background: rgba(255, 255, 255, 0.45);
+				width: 0.45rem;
+				height: 0.45rem;
+				margin: 0 0.18rem;
+			}
+			.pdp-gallery :global(.splide__pagination__page.is-active) {
+				background: var(--secondary);
+				transform: scale(1.18);
+			}
+			.pdp-price {
+				font-size: 1.45rem;
+				font-weight: 800;
+				margin: 0.2rem 0 0.7rem;
+			}
+			.pdp-price-old {
+				text-decoration: line-through;
+				opacity: 0.7;
+				font-size: 1.1rem;
+				margin-left: 0.35rem;
+			}
+			.pdp-ml a {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.95rem 1.5rem;
+				background: #ffe600;
+				color: #222;
+				font-weight: 800;
+				text-decoration: none;
+				border-radius: 10px;
+				min-height: 48px;
+			}
+			.pdp-trust {
+				display: grid;
+				gap: 0.4rem;
+				margin: 0.9rem 0 0;
+				font-size: 0.95rem;
+				opacity: 0.95;
+			}
+			.pdp-prose {
+				margin-top: 1.35rem;
+				line-height: 1.65;
+			}
+			.pdp-sticky-buy {
+				position: fixed;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				z-index: 1000;
+				background: rgba(16, 16, 16, 0.92);
+				backdrop-filter: blur(8px);
+				border-top: 1px solid rgba(255, 255, 255, 0.12);
+				padding: 0.6rem 0.9rem calc(0.6rem + env(safe-area-inset-bottom));
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+			}
+			.pdp-sticky-price {
+				font-weight: 800;
+				white-space: nowrap;
+			}
+			.pdp-sticky-buy a {
+				margin-left: auto;
+				min-height: 46px;
+				padding: 0.7rem 1rem;
+				border-radius: 10px;
+				text-decoration: none;
+				font-weight: 800;
+				background: #ffe600;
+				color: #222;
+				display: inline-flex;
+				align-items: center;
+			}
+			@media (min-width: 900px) {
+				.pdp {
+					padding-bottom: 3rem;
+				}
+				.pdp-sticky-buy {
+					display: none;
+				}
+			}
+			@media (max-width: 640px) {
+				.pdp-gallery :global(.splide__arrow) {
+					width: 2.35rem;
+					height: 2.35rem;
+				}
+				.pdp-gallery :global(.splide__arrow--prev) {
+					left: 0.55rem;
+				}
+				.pdp-gallery :global(.splide__arrow--next) {
+					right: 0.55rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="portal-bg" aria-hidden="true"></div>
+		<Header />
+		<main class="pdp">
+			<article>
+				<header>
+					<h1>{d.title}</h1>
+					<div class="pdp-meta">Colección: {colLabel} · {d.category}</div>
+					{hasMultiple ? (
+						<div class="splide pdp-gallery" id="pdp-slider" aria-label="Imágenes del producto">
+							<div class="splide__track">
+								<ul class="splide__list">
+									{d.images.map((im) => (
+										<li class="splide__slide">
+											<Image src={im} alt={d.title} width={1200} quality={90} />
+										</li>
+									))}
+								</ul>
+							</div>
+						</div>
+					) : (
+						<div class="pdp-single">
+							<Image src={firstImg} alt={d.title} width={1200} quality={90} />
+						</div>
+					)}
+					<p class="pdp-price">
+						<span>UYU {d.salePrice != null ? d.salePrice : d.price}</span>
+						{d.salePrice != null && <span class="pdp-price-old">UYU {d.price}</span>}
+					</p>
+					<p class="pdp-ml">
+						<a href={d.mercadolibre_link} rel="nofollow noopener" target="_blank" data-ml-cta>Comprar en MercadoLibre</a>
+					</p>
+					<div class="pdp-trust" aria-label="beneficios de compra">
+						<span>✓ Pago protegido en MercadoLibre</span>
+						<span>✓ Envío seguro en todo Uruguay</span>
+						<span>✓ Cambios y devoluciones según publicación</span>
+					</div>
+					<div class="pdp-prose">
+						<Content />
+					</div>
+				</header>
+			</article>
+		</main>
+		<div class="pdp-sticky-buy">
+			<div class="pdp-sticky-price">UYU {d.salePrice != null ? d.salePrice : d.price}</div>
+			<a href={d.mercadolibre_link} rel="nofollow noopener" target="_blank" data-ml-cta>Comprar</a>
+		</div>
+		<Footer />
+		{hasMultiple && (
+			<script>
+				import Splide from '@splidejs/splide';
+				import '@splidejs/splide/css';
+				const el = document.getElementById('pdp-slider');
+				if (el) {
+					new Splide('#pdp-slider', {
+						type: 'loop',
+						perPage: 1,
+						heightRatio: 0.75,
+						pagination: true,
+						arrows: true,
+						drag: true,
+						keyboard: 'focused',
+					}).mount();
+				}
+			</script>
+		)}
+	</body>
+</html>

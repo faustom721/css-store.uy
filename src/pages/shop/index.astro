@@ -1,0 +1,259 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+
+const pageTitle = `Tienda | ${SITE_TITLE}`;
+
+const products = (await getCollection('products')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const productCols = (await getCollection('productCollections')).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+const colBySlug = new Map(productCols.map((c) => [c.data.slug, c.data.title]));
+
+const categories = ['', 'Medias', 'Shorts', 'Remeras', 'Buzos', 'Accesorios'] as const;
+
+const hdImages = {
+	portal1: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=2048&q=95',
+	portal2: 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=2048&q=95',
+	texture: 'https://images.unsplash.com/photo-1579546929662-711aa81148cf?w=2048&q=95',
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<BaseHead title={pageTitle} description={SITE_DESCRIPTION} />
+		<style
+			define:vars={{
+				portalBg1: `url(${hdImages.portal1})`,
+				portalBg2: `url(${hdImages.portal2})`,
+				textureBg: `url(${hdImages.texture})`,
+			}}
+		>
+			body {
+				margin: 0;
+				font-family: 'Atkinson', sans-serif;
+				background: var(--background);
+				color: var(--text);
+				overflow-x: hidden;
+			}
+			.portal-bg {
+				position: fixed;
+				inset: 0;
+				background:
+					radial-gradient(circle at 10% 20%, rgba(var(--primary-rgb), 0.4) 0%, transparent 50%),
+					radial-gradient(circle at 90% 80%, rgba(var(--secondary-rgb), 0.2) 0%, transparent 50%),
+					var(--background);
+				z-index: -1;
+			}
+			.portal-bg::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--textureBg) center/cover;
+				opacity: 0.05;
+				mix-blend-mode: overlay;
+			}
+			main {
+				width: 100%;
+				max-width: 100%;
+			}
+			.shop-hero {
+				padding: 5rem 2rem 2rem;
+				text-align: center;
+				background: rgba(var(--primary-dark-rgb), 0.25);
+				backdrop-filter: blur(8px);
+				border-bottom: 1px solid rgba(var(--secondary-rgb), 0.1);
+			}
+			.shop-hero h1 {
+				color: var(--secondary);
+				font-size: clamp(2rem, 5vw, 3rem);
+				margin: 0 0 0.5rem;
+			}
+			.shop-hero p {
+				margin: 0;
+				opacity: 0.9;
+				max-width: 40rem;
+				margin-inline: auto;
+			}
+			.shop-filters {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 1rem;
+				justify-content: center;
+				align-items: center;
+				padding: 1.5rem 2rem;
+				max-width: 1200px;
+				margin: 0 auto;
+			}
+			.shop-filters input,
+			.shop-filters select {
+				font-family: inherit;
+				font-size: 1rem;
+				padding: 0.6rem 0.9rem;
+				border-radius: 8px;
+				border: 1px solid rgba(var(--secondary-rgb), 0.2);
+				background: rgba(var(--primary-dark-rgb), 0.4);
+				color: var(--text);
+			}
+			.shop-filters input {
+				min-width: min(100%, 280px);
+			}
+			.shop-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+				gap: 1.5rem;
+				padding: 2rem;
+				max-width: 2400px;
+				margin: 0 auto 4rem;
+			}
+			.shop-card {
+				background: rgba(var(--primary-dark-rgb), 0.5);
+				border-radius: 20px;
+				overflow: hidden;
+				border: 1px solid rgba(var(--secondary-rgb), 0.15);
+				display: flex;
+				flex-direction: column;
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+			.shop-card:hover {
+				transform: translateY(-4px);
+				box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+			}
+			.shop-card a {
+				color: inherit;
+				text-decoration: none;
+			}
+			.shop-card.is-hidden {
+				display: none;
+			}
+			.shop-card-img {
+				width: 100%;
+				aspect-ratio: 1;
+				object-fit: cover;
+				display: block;
+			}
+			.shop-card-body {
+				padding: 1.25rem;
+				display: flex;
+				flex-direction: column;
+				gap: 0.5rem;
+				flex: 1;
+			}
+			.shop-card h2 {
+				margin: 0;
+				color: var(--secondary);
+				font-size: 1.25rem;
+			}
+			.shop-card-meta {
+				font-size: 0.85rem;
+				opacity: 0.8;
+			}
+			.shop-card-description {
+				margin: 0;
+				font-size: 0.9rem;
+				line-height: 1.4;
+				flex: 1;
+			}
+			.shop-card-price {
+				font-weight: 700;
+				color: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="portal-bg" aria-hidden="true"></div>
+		<Header />
+		<main>
+			<div class="shop-hero">
+				<h1>Tienda</h1>
+				<p>Busca por título, filtrá por colección o categoría. Comprá con confianza en MercadoLibre.</p>
+			</div>
+			<div class="shop-filters" id="shop-filters">
+				<input type="search" id="shop-search" placeholder="Buscar por título…" aria-label="Buscar por título" />
+				<select id="filter-collection" aria-label="Filtrar por colección">
+					<option value="">Todas las colecciones</option>
+					{
+						productCols.map((c) => (
+							<option value={c.data.slug}>{c.data.title}</option>
+						))
+					}
+				</select>
+				<select id="filter-category" aria-label="Filtrar por categoría">
+					{categories.map((c) => <option value={c || ''}>{c || 'Todas las categorías'}</option>)}
+				</select>
+			</div>
+			<div class="shop-grid" id="shop-grid">
+				{
+					products.map((p) => {
+						const d = p.data;
+						const img0 = d.images[0]!;
+						const colTitle = colBySlug.get(d.collection) ?? d.collection;
+						return (
+							<article
+								class="shop-card"
+								data-title={d.title.toLowerCase()}
+								data-collection={d.collection}
+								data-category={d.category}
+							>
+								<a href={`/shop/${d.slug}/`} class="shop-card-link">
+									<Image
+										class="shop-card-img"
+										src={img0}
+										alt={d.title}
+										widths={[400, 600]}
+										sizes="(max-width: 600px) 100vw, 33vw"
+										loading="lazy"
+									/>
+									<div class="shop-card-body">
+										<h2>{d.title}</h2>
+										<div class="shop-card-meta">
+											{colTitle} · {d.category}
+										</div>
+										<p class="shop-card-description">{d.shortDescription}</p>
+										<div class="shop-card-price">UYU {d.salePrice ?? d.price} {d.salePrice != null ? '— en oferta' : ''}</div>
+									</div>
+								</a>
+							</article>
+						);
+					})
+				}
+			</div>
+		</main>
+		<Footer />
+		<script is:inline>
+			(function () {
+				const q = document.getElementById('shop-search');
+				const fc = document.getElementById('filter-collection');
+				const fcat = document.getElementById('filter-category');
+				const cards = () => document.querySelectorAll('.shop-card');
+				function run() {
+					var term = (q && 'value' in q ? (q).value : '').toLowerCase().trim();
+					var col = (fc && 'value' in fc ? (fc).value : '') || '';
+					var cat = (fcat && 'value' in fcat ? (fcat).value : '') || '';
+					cards().forEach(function (el) {
+						if (!(el instanceof HTMLElement)) return;
+						var title = (el.getAttribute('data-title') || '').toLowerCase();
+						var c = el.getAttribute('data-collection') || '';
+						var k = el.getAttribute('data-category') || '';
+						var match =
+							(!term || title.indexOf(term) !== -1) &&
+							(!col || c === col) &&
+							(!cat || k === cat);
+						el.classList.toggle('is-hidden', !match);
+					});
+				}
+				[q, fc, fcat].forEach(function (e) {
+					if (e) e.addEventListener('input', run);
+					if (e) e.addEventListener('change', run);
+				});
+			})();
+		</script>
+	</body>
+</html>

@@ -181,6 +181,30 @@ declare module 'astro:content' {
   rendered?: RenderedContent;
   filePath?: string;
 }>;
+"productCollections": Record<string, {
+  id: string;
+  body?: string;
+  collection: "productCollections";
+  data: InferEntrySchema<"productCollections">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"products": Record<string, {
+  id: string;
+  body?: string;
+  collection: "products";
+  data: InferEntrySchema<"products">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"siteSettings": Record<string, {
+  id: string;
+  body?: string;
+  collection: "siteSettings";
+  data: InferEntrySchema<"siteSettings">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
 
 	};
 

@@ -4,18 +4,54 @@ import { SITE_TITLE } from '../consts';
 import productData from '../content/data/main.json';
 import GoogleAnalytics from './GoogleAnalytics.astro';
 import AnalyticsEvents from './AnalyticsEvents.astro';
+import { SITE_URL } from '../consts';
 
 interface Props {
 	title: string;
 	description: string;
 	image?: string;
 	keywords?: string[];
+	ogType?: 'website' | 'product' | 'article';
+	ogImageType?: string;
+	/** Extra JSON-LD objects (Product, BreadcrumbList, etc.) */
+	extraJsonLd?: Array<Record<string, unknown>> | null;
+	/** If false, omitted Store schema; use e.g. product-only pages. Default true. */
+	includeStoreJsonLd?: boolean;
 }
 
 const { seo } = productData;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const { title, description, image = '/android-chrome-512x512.png', keywords = seo.keywords } = Astro.props;
+const {
+	title,
+	description,
+	image = '/android-chrome-512x512.png',
+	keywords = seo.keywords,
+	ogType = 'website',
+	ogImageType = 'image/png',
+	extraJsonLd = null,
+	includeStoreJsonLd = true,
+} = Astro.props;
 const ogImage = new URL(image, Astro.site);
+
+const siteOrigin = (Astro.site && Astro.site.href) || `${SITE_URL}/`;
+const { product } = productData;
+const sameAs = (product?.footer?.socialLinks ?? [])
+	.map((l: { url: string }) => l.url)
+	.filter(Boolean);
+
+const siteAndOrg = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{ '@type': 'WebSite', name: 'CSS Store Uruguay', url: siteOrigin },
+		{
+			'@type': 'Organization',
+			name: 'CSS Store Uruguay',
+			url: siteOrigin,
+			logo: new URL('/android-chrome-512x512.png', siteOrigin).href,
+			...(sameAs.length ? { sameAs } : {}),
+		},
+	],
+} as const;
 ---
 
 <!-- Google Analytics -->
@@ -61,12 +97,12 @@ const ogImage = new URL(image, Astro.site);
 <meta name="description" content={description} />
 
 <!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImage} />
-<meta property="og:image:type" content="image/png" />
+<meta property="og:image:type" content={ogImageType} />
 <meta property="og:site_name" content="CSS Store Uruguay" />
 <meta property="og:locale" content="es_UY" />
 
@@ -78,7 +114,9 @@ const ogImage = new URL(image, Astro.site);
 <meta name="twitter:image" content={ogImage} />
 
 <!-- Structured Data -->
-<script type="application/ld+json" set:html={JSON.stringify(seo.structuredData)} />
+{includeStoreJsonLd && <script type="application/ld+json" set:html={JSON.stringify(seo.structuredData)} />}
+<script type="application/ld+json" set:html={JSON.stringify(siteAndOrg)} />
+{extraJsonLd?.map((g) => <script type="application/ld+json" set:html={JSON.stringify(g)} />)}
 
 <!-- GA4 Event Tracking -->
 <AnalyticsEvents />
